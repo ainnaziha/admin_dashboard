@@ -40,12 +40,9 @@ namespace spl.Pages.Division
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "INSERT INTO bahagian " + "(nama_bahagian) VALUES " +
-                                                 "(@nama_bahagian);";
+                String sql = $"INSERT INTO bahagian (nama_bahagian) VALUES ('{bahagian.NamaBahagian}');";
 
                 using SqlCommand command = new(sql, connection);
-
-                command.Parameters.AddWithValue("@nama_bahagian", bahagian.NamaBahagian);
                 command.ExecuteNonQuery();
 
                 connection.Close();
