@@ -45,15 +45,10 @@ namespace spl.Pages
                 {
                     reader.Read();
 
-                    int id = reader.GetInt32(reader.GetOrdinal("id"));
-                    string username = reader.GetString(reader.GetOrdinal("username"));
-                    string userType = reader.GetString(reader.GetOrdinal("user_type"));
-                    int? stationId = null;
-                    int stationOrdinal = reader.GetOrdinal("id_stesen");
-                    if (!reader.IsDBNull(stationOrdinal))
-                    {
-                        stationId = reader.GetInt32(stationOrdinal);
-                    }
+                    int id = Convert.ToInt32(reader["id"]);
+                    string username = Convert.ToString(reader["username"]) ?? "";
+                    string userType = Convert.ToString(reader["user_type"]) ?? "";
+                    int? stationId = reader["id_stesen"] == DBNull.Value ? null : Convert.ToInt32(reader["id_stesen"]);
 
                     Response.Cookies.Append("UserId", id.ToString());
                     Response.Cookies.Append("Username", username);
@@ -72,9 +67,9 @@ namespace spl.Pages
                     return Page();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                errorMsg = e.Message;
+                errorMsg = ex.Message;
                 return Page();
             }
         }

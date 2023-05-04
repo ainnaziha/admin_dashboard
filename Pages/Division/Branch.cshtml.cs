@@ -35,7 +35,7 @@ namespace spl.Pages.Division
 
         public void FetchBranch()
         {
-            Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
+            Debug.WriteLine("Branch FetchBranch: Fetch branch list");
 
             try
             {
@@ -51,8 +51,8 @@ namespace spl.Pages.Division
                     {
                         Bahagian bahagian = new()
                         {
-                            Id = reader.GetInt32(0),
-                            NamaBahagian = reader.GetString(1)
+                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
+                            NamaBahagian = Convert.ToString(reader["nama_bahagian"]) ?? "",
                         };
                         listBahagian.Add(bahagian);
                     }
@@ -62,7 +62,7 @@ namespace spl.Pages.Division
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Branch OnGetFetchBranch Error: {ex.Message}");
+                Debug.WriteLine($"Branch FetchBranch Error: {ex.Message}");
             }
         }
 
@@ -88,11 +88,11 @@ namespace spl.Pages.Division
                     {
                         Cawangan cawangan = new()
                         {
-                            Id = Convert.ToInt32(reader["id"]),
+                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
                             NamaCawangan = Convert.ToString(reader["nama_cawangan"]) ?? "",
                             Bahagian = new Bahagian()
                             {
-                                Id = Convert.ToInt32(reader["id"]),
+                                Id = reader["id_bahagian"] == DBNull.Value ? null : Convert.ToInt32(reader["id_bahagian"]),
                                 NamaBahagian = Convert.ToString(reader["nama_bahagian"]) ?? "",
                             }
                         };

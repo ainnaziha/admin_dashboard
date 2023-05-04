@@ -22,11 +22,11 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @foreach(var item in Model.listStesen)
+                    @for (int index = 0; index < Model.listStesen.Count(); index++)
                     {
                      <tr>
-                        <td>@item.Id</td>
-                        <td>@item.NamaStesen</td>
+                        <td>@(index + 1)</td>
+                        <td>@Model.listStesen[index].NamaStesen</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -40,7 +40,6 @@
                         </td>
                     </tr>
                     }
-
                 </tbody>
             </table>
         </div>

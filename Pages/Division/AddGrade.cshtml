@@ -1,0 +1,95 @@
+﻿@page
+@model spl.Pages.Division.AddGradeModel
+@{
+    ViewData["Title"] = "Tambah Gred";
+    ViewData["CurrentMenu"] = "grade";
+    Layout = Model.Layout;
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <h5 class="mb-0">Tambah Cawangan</h5>
+            </div>
+            <div class="card-body">
+                <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class="bx bx-error me-2"></i>
+                        <div class="me-auto fw-semibold">Daftar Tidak Berjaya</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body" id="error-msg"></div>
+                </div>
+
+                <form id="form-add-section">
+
+                     <div class="mb-3">
+                        <label class="form-label" for="abjad">Abjad Gred</label>
+                        <input type="text" class="form-control" id="abjad" name="gred.Abjad" placeholder="Sila isikan abjad gred" required/>
+                    </div>
+
+                     <div class="mb-3">
+                        <label class="form-label" for="nombor">Nombor Gred</label>
+                        <input type="text" class="form-control" id="nombor" name="gred.Nombor" placeholder="Sila isikan nombor gred" required/>
+                    </div>
+
+                     <div class="mb-3">
+                        <label class="form-label" for="pangkat">Pangkat <span class="text-muted fw-light">(Optional)</span></label>
+                        <input type="text" class="form-control" id="pangkat" name="gred.Pangkat" placeholder="Sila isikan pangkat"/>
+                    </div>
+
+                     <div class="mb-3">
+                        <label class="form-label" for="gelaran">Gelaran Pangkat <span class="text-muted fw-light">(Optional)</span></label>
+                        <input type="text" class="form-control" id="gelaran" name="gred.GelaranPangkat" placeholder="Sila isikan gelaran" />
+                    </div>
+
+                     <div class="mb-3">
+                        <label class="form-label" for="jabatan">Jabatan</label>
+                        <input type="text" class="form-control" id="jabatan" name="gred.Jabatan" placeholder="Sila isikan jabatan" required/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="kumpulan">Kumpulan <span class="text-muted fw-light">(Optional)</span></label>
+                        <select id="kumpulan" name="gred.IdKumpulan" class="select2 form-select">
+                            <option hidden>Pilih Kumpulan</option>
+                            <option value=1>JUSA</option>
+                            <option value=2>PENGURUSAN DAN PROFESIONAL</option>
+                            <option value=3>PELAKSANA</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2">Hantar</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#form-add-section').submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: '/division/addgrade?handler=CreateGrade',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = '/division/grade';
+                } else {
+                    $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                    $('#error-msg').text(response.msg);
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                $('#error-msg').text(error);
+            }
+        });
+    })
+</script>

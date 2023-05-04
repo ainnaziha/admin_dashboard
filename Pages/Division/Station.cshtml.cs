@@ -10,7 +10,7 @@ namespace spl.Pages.Division
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public List<Stesen> listStesen = new List<Stesen>();
+        public List<Stesen> listStesen = new();
 
         public StationModel(IConfiguration config)
         {
@@ -29,12 +29,13 @@ namespace spl.Pages.Division
             {
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
-            OnGetFetchStesen();
+
+            FetchStation();
         }
 
-        public JsonResult OnGetFetchStesen()
+        public void FetchStation()
         {
-            Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
+            Debug.WriteLine("Station FetchStation: Fetch station list");
 
             try
             {
@@ -50,21 +51,20 @@ namespace spl.Pages.Division
                     {
                         Stesen stesen = new()
                         {
-                            Id = reader.GetInt32(0),
-                            NamaStesen = reader.GetString(1)
+                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
+                            NamaStesen = Convert.ToString(reader["nama_stesen"]) ?? "",
                         };
+
                         listStesen.Add(stesen);
                     }
                 }
 
                 connection.Close();
-                return new JsonResult(new { success = true });
             }
             catch (Exception ex)
             {
-                return new JsonResult(new { success = false, msg = ex.Message });
+                Debug.WriteLine($"Branch FetchStation Error: {ex.Message}");
             }
-
         }
     }
 }
