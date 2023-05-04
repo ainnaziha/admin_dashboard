@@ -50,41 +50,96 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-justified-branch" role="tabpanel">
-                    <h2>Senarai Bahagian</h2>
-                    <a class='btn btn-primary btn-sm' href='/Division/AddBranch'>Daftar Bahagian</a>
-                    <table class="table">
-                        <thead>
-                             <tr>
-                                 <th>Id</th>
-                                 <th>Nama Bahagian</th>
-                             </tr>
-                        </thead>
-                        <tbody>
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <h5 class="card-title text-primary">Senarai Bahagian</h5>
+                        <a class='btn btn-primary' href='/division/addbranch'>Tambah</a>
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Bahagian</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Section -->
                 <div class="tab-pane fade" id="navs-justified-section" role="tabpanel">
-                    <p>
-                        Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice
-                        cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream
-                        cheesecake fruitcake.
-                    </p>
-                    <p class="mb-0">
-                        Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah
-                        cotton candy liquorice caramels.
-                    </p>
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <h5 class="card-title text-primary">Senarai Cawangan</h5>
+                        <a class='btn btn-primary' href='/division/addsection'>Tambah</a>
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Cawangan</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Albert Cook</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <!-- Unit -->
                 <div class="tab-pane fade" id="navs-justified-unit" role="tabpanel">
-                    <p>
-                        Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies
-                        cupcake gummi bears cake chocolate.
-                    </p>
-                    <p class="mb-0">
-                        Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet
-                        roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly
-                        jelly-o tart brownie jelly.
-                    </p>
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <h5 class="card-title text-primary">Senarai Unit</h5>
+                        <button type="button" class="btn btn-primary">Tambah</button>
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Unit</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Albert Cook</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,26 +147,24 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
-        $("#btn-nav-branch").click(function () {
-            $.ajax({
-                type: 'GET',
-                url: "/division/branch?handler=FetchBranch",
-            });
+    $("#btn-nav-branch").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: "/division/branch?handler=FetchBranch",
         });
+    });
 
-        $("#btn-nav-section").click(function () {
-            $.ajax({
-                type: 'GET',
-                url: "/division/branch?handler=FetchSection",
-            });
+    $("#btn-nav-section").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: "/division/branch?handler=FetchSection",
         });
+    });
 
-        $("#btn-nav-unit").click(function () {
-            $.ajax({
-                type: 'GET',
-                url: "/division/branch?handler=FetchUnit",
-            });
+    $("#btn-nav-unit").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: "/division/branch?handler=FetchUnit",
         });
     });
 </script>
