@@ -1,12 +1,14 @@
 CREATE TABLE bahagian (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-  nama_bahagian VARCHAR(255) NOT NULL
+  nama_bahagian VARCHAR(255) NOT NULL,
+  is_deleted INT
 );
 
 CREATE TABLE cawangan (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_cawangan VARCHAR(255) NOT NULL,
   id_bahagian INT NOT NULL,
+  is_deleted INT,
   FOREIGN KEY (id_bahagian) REFERENCES bahagian(id)
 );
 
@@ -14,12 +16,14 @@ CREATE TABLE unit (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_unit VARCHAR(255) NOT NULL,
   id_bahagian INT NOT NULL,
+  is_deleted INT,
   FOREIGN KEY (id_bahagian) REFERENCES bahagian(id)
 );
 
 CREATE TABLE stesen (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_stesen VARCHAR(255) NOT NULL,
+  is_deleted INT,
 );
 
 CREATE TABLE kumpulan (
@@ -35,12 +39,14 @@ CREATE TABLE gred (
   gelaran_pangkat VARCHAR(255),
   jabatan VARCHAR(255) NOT NULL,
   id_kumpulan INT,
+  is_deleted INT,
   FOREIGN KEY (id_kumpulan) REFERENCES kumpulan(id)
 );
 
 CREATE TABLE kategori_kursus (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_kategori VARCHAR(255) NOT NULL,
+  is_deleted INT,
 );
 
 CREATE TABLE kursus (
@@ -50,6 +56,7 @@ CREATE TABLE kursus (
   tarikh_akhir DATE NOT NULL,
   lokasi VARCHAR(255) NOT NULL,
   id_kategori INT,
+  is_deleted INT,
   FOREIGN KEY (id_kategori) REFERENCES kategori_kursus(id)
 );
 
@@ -62,6 +69,7 @@ CREATE TABLE users (
   id_cawangan INT,
   id_unit INT,
   id_stesen INT,
+  is_deleted INT,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id_bahagian) REFERENCES bahagian(id),
   FOREIGN KEY (id_cawangan) REFERENCES cawangan(id),
@@ -78,6 +86,7 @@ CREATE TABLE pegawai (
   id_cawangan INT,
   id_unit INT,
   id_stesen INT,
+  is_deleted INT,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id_gred) REFERENCES gred(id),
   FOREIGN KEY (id_bahagian) REFERENCES bahagian(id),
@@ -94,6 +103,7 @@ CREATE TABLE kursus_pegawai (
   id_kursus INT NOT NULL,
   jumlah_hari FLOAT NOT NULL,
   bulan INT NOT NULL,
+  is_deleted INT,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id_pegawai) REFERENCES pegawai(id),
   FOREIGN KEY (id_kursus) REFERENCES kursus(id)
