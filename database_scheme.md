@@ -1,34 +1,34 @@
 CREATE TABLE bahagian (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_bahagian VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE cawangan (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_cawangan VARCHAR(255) NOT NULL,
   id_bahagian INT NOT NULL,
   FOREIGN KEY (id_bahagian) REFERENCES bahagian(id)
 );
 
 CREATE TABLE unit (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_unit VARCHAR(255) NOT NULL,
   id_bahagian INT NOT NULL,
   FOREIGN KEY (id_bahagian) REFERENCES bahagian(id)
 );
 
 CREATE TABLE stesen (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_stesen VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE kumpulan (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_kumpulan VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE gred (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   abjad VARCHAR(255) NOT NULL,
   nombor VARCHAR(255) NOT NULL,
   pangkat VARCHAR(255),
@@ -39,12 +39,12 @@ CREATE TABLE gred (
 );
 
 CREATE TABLE kategori_kursus (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_kategori VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE kursus (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   tajuk VARCHAR(255) NOT NULL,
   tarikh_mula DATE NOT NULL,
   tarikh_akhir DATE NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE kursus (
 );
 
 CREATE TABLE users (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   username VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   user_type VARCHAR(255) NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE pegawai (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_pegawai VARCHAR(255) NOT NULL,
   no_ic VARCHAR(255) NOT NULL,
   id_gred INT,
@@ -87,7 +87,7 @@ CREATE TABLE pegawai (
 );
 
 CREATE TABLE kursus_pegawai (
-  id INT NOT NULL PRIMARY KEY,
+  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   tarikh_mula DATE NOT NULL,
   tarikh_akhir DATE NOT NULL,
   id_pegawai INT NOT NULL,
