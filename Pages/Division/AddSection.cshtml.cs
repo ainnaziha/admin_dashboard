@@ -6,13 +6,12 @@ using System.Diagnostics;
 
 namespace spl.Pages.Division
 {
-    [IgnoreAntiforgeryToken]
-    public class AddBranchModel : PageModel
+    public class AddSectionModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
 
-        public AddBranchModel(IConfiguration config)
+        public AddSectionModel(IConfiguration config)
         {
             _configuration = config;
         }
