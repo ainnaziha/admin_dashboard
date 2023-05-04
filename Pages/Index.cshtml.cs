@@ -4,7 +4,6 @@ using spl.Model;
 using System.Diagnostics;
 using System.Data.SqlClient;
 using spl.Middleware;
-using Microsoft.Extensions.Configuration;
 
 namespace spl.Pages
 {
