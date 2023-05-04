@@ -23,7 +23,7 @@ CREATE TABLE unit (
 CREATE TABLE stesen (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_stesen VARCHAR(255) NOT NULL,
-  is_deleted INT,
+  is_deleted INT
 );
 
 CREATE TABLE kumpulan (
@@ -46,7 +46,7 @@ CREATE TABLE gred (
 CREATE TABLE kategori_kursus (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   nama_kategori VARCHAR(255) NOT NULL,
-  is_deleted INT,
+  is_deleted INT
 );
 
 CREATE TABLE kursus (
