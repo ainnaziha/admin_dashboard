@@ -38,4 +38,9 @@ app.MapRazorPages();
 
 app.UseMiddleware<AuthenticationMiddleware>();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
 app.Run();
