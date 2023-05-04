@@ -61,11 +61,13 @@ namespace spl.Pages
                     Response.Cookies.Append("UserType", userType);
                     Response.Cookies.Append("IsAuthenticated", "1");
 
+                    connection.Close();
                     return RedirectToPage("/home/dashboard");
 
                 }
                 else
                 {
+                    connection.Close();
                     errorMsg = "Sila pastikan username dan password adalah betul.";
                     return Page();
                 }
