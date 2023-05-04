@@ -65,23 +65,23 @@
                             </thead>
                             <tbody class="table-border-bottom-0">
                                 @foreach(var item in Model.listBahagian)
-                                    {
-                                        <tr>
-                                            <td>@item.Id</td>
-                                            <td>@item.NamaBahagian</td>
-                                             <td>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                                                    </div>
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.NamaBahagian</td>
+                                            <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -169,8 +169,9 @@
             type: 'GET',
             url: "/division/branch?handler=FetchSection",
             success: function (response) {
+                console.log(response);
                 if (response.success) {
-                    console.log(response.data)
+                    
                 }
             },
         });

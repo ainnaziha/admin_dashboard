@@ -24,40 +24,21 @@
                 </div>
 
                 <form id="form-add-section">
-                    <div class="mb-3 col-md-6">
-                        <label class="form-label" for="country">Country</label>
-                        <select id="country" class="select2 form-select">
-                            <option value="">Select</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Bangladesh">Bangladesh</option>
-                            <option value="Belarus">Belarus</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Canada">Canada</option>
-                            <option value="China">China</option>
-                            <option value="France">France</option>
-                            <option value="Germany">Germany</option>
-                            <option value="India">India</option>
-                            <option value="Indonesia">Indonesia</option>
-                            <option value="Israel">Israel</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Japan">Japan</option>
-                            <option value="Korea">Korea, Republic of</option>
-                            <option value="Mexico">Mexico</option>
-                            <option value="Philippines">Philippines</option>
-                            <option value="Russia">Russian Federation</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="Thailand">Thailand</option>
-                            <option value="Turkey">Turkey</option>
-                            <option value="Ukraine">Ukraine</option>
-                            <option value="United Arab Emirates">United Arab Emirates</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="United States">United States</option>
+                    <div class="mb-3">
+                        <label class="form-label" for="bahagian">Nama Bahagian</label>
+                        <select id="bahagian" name="cawangan.IdBahagian" class="select2 form-select" required>
+                            <option hidden>Pilih Bahagian</option>
+
+                            @foreach (var item in Model.listBahagian)
+                            {
+                                <option value=@item.Id>@item.NamaBahagian</option>
+                            }
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="nama-bahagian">Nama Bahagian</label>
-                        <input type="text" class="form-control" id="nama-bahagian" name="bahagian.NamaBahagian" placeholder="Sila isikan nama bahagian" required/>
+                        <label class="form-label" for="nama-cawangan">Nama Cawangan</label>
+                        <input type="text" class="form-control" id="nama-cawangan" name="cawangan.NamaCawangan" placeholder="Sila isikan nama cawangan" required/>
                     </div>
                 
                     <div class="mt-2">
@@ -74,6 +55,22 @@
     $('#form-add-section').submit(function (e) {
         e.preventDefault();
 
-      
+        $.ajax({
+            type: 'POST',
+            url: '/division/addsection?handler=CreateSection',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = '/division/branch';
+                } else {
+                    $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                    $('#error-msg').text(response.msg);
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                $('#error-msg').text(error);
+            }
+        });
     })
 </script>

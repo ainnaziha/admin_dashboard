@@ -6,10 +6,12 @@ using System.Diagnostics;
 
 namespace spl.Pages.Division
 {
+    [IgnoreAntiforgeryToken]
     public class AddSectionModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
+        public List<Bahagian> listBahagian = new();
 
         public AddSectionModel(IConfiguration config)
         {
@@ -28,23 +30,56 @@ namespace spl.Pages.Division
             {
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
+
+            FetchBranch();
         }
 
-        public JsonResult OnPostCreateBranch(Bahagian bahagian)
+        public void FetchBranch()
         {
-            Debug.WriteLine($"AddBranch OnPostCreateBranch: Adding bahagian {bahagian.NamaBahagian}");
+            Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
 
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "INSERT INTO bahagian " + "(nama_bahagian) VALUES " +
-                                                 "(@nama_bahagian);";
+                String sql = "SELECT * FROM bahagian";
 
                 using SqlCommand command = new(sql, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Bahagian bahagian = new()
+                        {
+                            Id = reader.GetInt32(0),
+                            NamaBahagian = reader.GetString(1)
+                        };
+                        listBahagian.Add(bahagian);
+                    }
+                }
 
-                command.Parameters.AddWithValue("@nama_bahagian", bahagian.NamaBahagian);
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Branch OnGetFetchBranch Error: {ex.Message}");
+            }
+        }
+
+        public JsonResult OnPostCreateSection(Cawangan cawangan)
+        {
+            Debug.WriteLine($"AddBranch OnPostCreateSection: Adding cawangan {cawangan.NamaCawangan}");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                String sql = $"INSERT INTO cawangan (nama_cawangan, id_bahagian) VALUES ('{cawangan.NamaCawangan}', {cawangan.IdBahagian});";
+
+                using SqlCommand command = new(sql, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();

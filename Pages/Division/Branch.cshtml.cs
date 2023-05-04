@@ -10,7 +10,7 @@ namespace spl.Pages.Division
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public List<Bahagian> listBahagian = new List<Bahagian>();
+        public List<Bahagian> listBahagian = new();
 
         public BranchModel(IConfiguration config)
         {
@@ -33,7 +33,7 @@ namespace spl.Pages.Division
             FetchBranch();
         }
 
-        public JsonResult FetchBranch()
+        public void FetchBranch()
         {
             Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
 
@@ -59,11 +59,10 @@ namespace spl.Pages.Division
                 }
 
                 connection.Close();
-                return new JsonResult(new { success = true });
             }
             catch (Exception ex)
             {
-                return new JsonResult(new { success = false, msg = ex.Message });
+                Debug.WriteLine($"Branch OnGetFetchBranch Error: {ex.Message}");
             }
         }
 
@@ -71,7 +70,7 @@ namespace spl.Pages.Division
         {
             Debug.WriteLine("Branch OnGetFetchSection: Fetch section list");
 
-            List<Cawangan> list = new List<Cawangan>();
+            List<Cawangan> list = new();
 
             try
             {
