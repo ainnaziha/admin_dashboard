@@ -26,11 +26,6 @@ CREATE TABLE stesen (
   is_deleted INT
 );
 
-CREATE TABLE kumpulan (
-  id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-  nama_kumpulan VARCHAR(255) NOT NULL,
-);
-
 CREATE TABLE gred (
   id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
   abjad VARCHAR(255) NOT NULL,
@@ -39,8 +34,8 @@ CREATE TABLE gred (
   gelaran_pangkat VARCHAR(255),
   jabatan VARCHAR(255) NOT NULL,
   id_kumpulan INT,
-  is_deleted INT,
-  FOREIGN KEY (id_kumpulan) REFERENCES kumpulan(id)
+  nama_kumpulan VARCHAR(255),
+  is_deleted INT
 );
 
 CREATE TABLE kategori_kursus (
