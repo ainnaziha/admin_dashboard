@@ -77,7 +77,7 @@ namespace spl.Pages.Division
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT c.id, c.nama_cawangan, b.id, b.nama_bahagian " +
+                String sql = "SELECT c.id, c.nama_cawangan, b.id as id_bahagian, b.nama_bahagian " +
                     "FROM cawangan c " +
                     "JOIN bahagian b ON c.id_bahagian = b.id;";
 
@@ -98,6 +98,8 @@ namespace spl.Pages.Division
                         };
 
                         list.Add(cawangan);
+
+                        Debug.WriteLine($"Branch OnGetFetchSection: {cawangan.NamaCawangan}");
                     }
                 }
 
