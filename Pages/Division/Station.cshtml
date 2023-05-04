@@ -10,7 +10,7 @@
     <div class="card py-4 px-4">
         <div class="card-title d-flex align-items-start justify-content-between">
             <h5 class="card-title text-primary">Senarai Stesen</h5>
-            <button type="button" class="btn btn-primary">Tambah</button>
+            <a class="btn btn-primary" href='/division/addstation'>Tambah</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
@@ -22,9 +22,11 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    <tr>
-                        <td>1</td>
-                        <td>Albert Cook</td>
+                    @foreach(var item in Model.listStesen)
+                    {
+                     <tr>
+                        <td>@item.Id</td>
+                        <td>@item.NamaStesen</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -37,6 +39,8 @@
                             </div>
                         </td>
                     </tr>
+                    }
+
                 </tbody>
             </table>
         </div>
