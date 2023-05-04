@@ -1,0 +1,37 @@
+﻿@page
+@model spl.Pages.Division.AddBranchModel
+@{
+}
+<h2>Add New Client</h2>
+@if (Model.errorMsg.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+        <strong>@Model.errorMsg</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+
+<form method="POST">
+    <div class='row mb-3'>
+        <label class='col-sm-3 col-form-label'>Nama Bahagian</label>
+        <div class='col-sm-6'>
+            <input type="text" class='form-control' name="bahagian.NamaBahagian" />
+        </div>
+    </div>
+
+@if (Model.successMsg.Length > 0)
+{
+    <div class='alert alert-success alert-dismissible fade show' role='alert'>
+        <strong>@Model.successMsg</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+    <div class='row mb-3'>
+        <div class='col-sm-3 d-grid'>
+            <button type="submit" class='btn btn-primary'>Hantar</button>
+        </div>
+         <div class='offset-sm-3 col-sm-3 d-grid'>
+            <button type="submit" href="#" class='btn btn-danger'>Batal</button>
+        </div>
+    </div>
+</form>

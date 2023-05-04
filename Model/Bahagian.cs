@@ -2,8 +2,13 @@
 {
     public class Bahagian
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
+        public String NamaBahagian { get; set; }
+
 
         public ICollection<User>? Users { get; set; }
+        public ICollection<Cawangan>? Cawangans { get; set; }
+        public ICollection<Unit>? Units { get; set; }
+
     }
 }
