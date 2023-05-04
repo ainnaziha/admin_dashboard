@@ -33,7 +33,7 @@ namespace spl.Pages.Division
 
         public void FetchGrade()
         {
-            Debug.WriteLine("Station FetchGrade: Fetch grade list");
+            Debug.WriteLine("Grade FetchGrade: Fetch grade list");
 
             try
             {
@@ -67,9 +67,8 @@ namespace spl.Pages.Division
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Branch FetchGrade Error: {ex.Message}");
+                Debug.WriteLine($"Grade FetchGrade Error: {ex.Message}");
             }
-
         }
     }
 }

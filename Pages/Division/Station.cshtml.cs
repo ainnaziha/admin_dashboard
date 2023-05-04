@@ -63,7 +63,7 @@ namespace spl.Pages.Division
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Branch FetchStation Error: {ex.Message}");
+                Debug.WriteLine($"Station FetchStation Error: {ex.Message}");
             }
         }
     }
