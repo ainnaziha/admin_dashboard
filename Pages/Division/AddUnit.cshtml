@@ -1,0 +1,76 @@
+﻿@page
+@model spl.Pages.Division.AddUnitModel
+@{
+    ViewData["Title"] = "Tambah Unit";
+    ViewData["CurrentMenu"] = "unit";
+    Layout = Model.Layout;
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <h5 class="mb-0">Tambah Unit</h5>
+            </div>
+            <div class="card-body">
+                <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class="bx bx-error me-2"></i>
+                        <div class="me-auto fw-semibold">Daftar Tidak Berjaya</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body" id="error-msg"></div>
+                </div>
+
+                <form id="form-add-unit">
+                   <div class="mb-3">
+                        <label class="form-label" for="bahagian">Nama Bahagian</label>
+                        <select id="bahagian" name="unit.IdBahagian" class="select2 form-select" required>
+                            <option hidden>Pilih Bahagian</option>
+
+                            @foreach (var item in Model.listBahagian)
+                            {
+                                <option value=@item.Id>@item.NamaBahagian</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="nama-unit">Nama Unit</label>
+                        <input type="text" class="form-control" id="nama-unit" name="unit.NamaUnit" placeholder="Sila isikan nama unit" required/>
+                    </div>
+                
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2">Hantar</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#form-add-unit').submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: '/division/addunit?handler=CreateUnit',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response.success) {
+                   window.location.href = '/division/branch';
+                } else {
+                    $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                    $('#error-msg').text(response.msg);
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                $('#error-msg').text(error);
+            }
+        });
+
+    })
+</script>

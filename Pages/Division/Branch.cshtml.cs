@@ -98,8 +98,6 @@ namespace spl.Pages.Division
                         };
 
                         list.Add(cawangan);
-
-                        Debug.WriteLine($"Branch OnGetFetchSection: {cawangan.NamaCawangan}");
                     }
                 }
 
@@ -113,9 +111,48 @@ namespace spl.Pages.Division
 
         }
 
-        public void OnGetFetchUnit()
+        public JsonResult OnGetFetchUnit()
         {
             Debug.WriteLine("Branch OnGetFetchUnit: Fetch unit list");
+
+            List<Unit> list = new();
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+                String sql = "SELECT c.id, c.nama_unit, b.id as id_bahagian, b.nama_bahagian " +
+                    "FROM unit c " +
+                    "JOIN bahagian b ON c.id_bahagian = b.id;";
+
+                using SqlCommand command = new(sql, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Unit unit = new()
+                        {
+                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
+                            NamaUnit = Convert.ToString(reader["nama_unit"]) ?? "",
+                            Bahagian = new Bahagian()
+                            {
+                                Id = reader["id_bahagian"] == DBNull.Value ? null : Convert.ToInt32(reader["id_bahagian"]),
+                                NamaBahagian = Convert.ToString(reader["nama_bahagian"]) ?? "",
+                            }
+                        };
+
+                        list.Add(unit);
+                    }
+                }
+
+                connection.Close();
+                return new JsonResult(new { success = true, data = list });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
+            }
 
         }
     }
