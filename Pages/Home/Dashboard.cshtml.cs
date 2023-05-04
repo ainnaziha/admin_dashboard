@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace spl.Pages
@@ -13,11 +12,11 @@ namespace spl.Pages
 
             if (userType == "admin")
             {
-                Layout = "Shared/_AdminLayout.cshtml";
+                Layout = "../Shared/_AdminLayout.cshtml";
             }
             else
             {
-                Layout = "Shared/_UrusetiaLayout.cshtml";
+                Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
         }
     }

@@ -16,7 +16,7 @@
             if (isAuthenticated && (context.Request.Path.Equals("/index", StringComparison.OrdinalIgnoreCase)
                 || context.Request.Path.Equals("/", StringComparison.OrdinalIgnoreCase)))
             {
-                context.Response.Redirect("/dashboard");
+                context.Response.Redirect("/home/dashboard");
             }
             else if (!isAuthenticated && !context.Request.Path.Equals("/index", StringComparison.OrdinalIgnoreCase) 
                 && !context.Request.Path.Equals("/error", StringComparison.OrdinalIgnoreCase) && !context.Request.Path.Equals("/", StringComparison.OrdinalIgnoreCase))
