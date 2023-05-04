@@ -36,6 +36,7 @@ namespace spl.Pages.Division
         public JsonResult OnGetFetchBranch()
         {
             Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
+
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -48,9 +49,11 @@ namespace spl.Pages.Division
                 {
                     while (reader.Read())
                     {
-                        Bahagian bahagian = new Bahagian();
-                        bahagian.Id = reader.GetInt32(0);
-                        bahagian.NamaBahagian = reader.GetString(1);
+                        Bahagian bahagian = new()
+                        {
+                            Id = reader.GetInt32(0),
+                            NamaBahagian = reader.GetString(1)
+                        };
                         listBahagian.Add(bahagian);
                     }
                 }
