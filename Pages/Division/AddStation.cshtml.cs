@@ -1,22 +1,21 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics;
 using System.Data.SqlClient;
 using spl.Model;
-using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace spl.Pages.Division
 {
-    public class StationModel : PageModel
+    [IgnoreAntiforgeryToken]
+    public class AddStationModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public List<Stesen> listStesen = new List<Stesen>();
 
-        public StationModel(IConfiguration config)
+        public AddStationModel(IConfiguration config)
         {
             _configuration = config;
         }
-
         public void OnGet()
         {
             string userType = Request.Cookies["UserType"] ?? "";
@@ -29,33 +28,24 @@ namespace spl.Pages.Division
             {
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
-            OnGetFetchStesen();
         }
 
-        public JsonResult OnGetFetchStesen()
+        public JsonResult OnPostCreateStation(Stesen stesen)
         {
-            Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
+            Debug.WriteLine($"AddStation OnPostCreateStation: Adding stesen {stesen.NamaStesen}");
 
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT * FROM stesen";
+                String sql = "INSERT INTO stesen " + "(nama_stesen) VALUES " +
+                                                 "(@nama_stesen);";
 
                 using SqlCommand command = new(sql, connection);
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Stesen stesen = new()
-                        {
-                            Id = reader.GetInt32(0),
-                            NamaStesen = reader.GetString(1)
-                        };
-                        listStesen.Add(stesen);
-                    }
-                }
+
+                command.Parameters.AddWithValue("@nama_stesen", stesen.NamaStesen);
+                command.ExecuteNonQuery();
 
                 connection.Close();
                 return new JsonResult(new { success = true });
@@ -64,7 +54,6 @@ namespace spl.Pages.Division
             {
                 return new JsonResult(new { success = false, msg = ex.Message });
             }
-
         }
     }
 }
