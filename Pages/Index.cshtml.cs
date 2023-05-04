@@ -25,7 +25,7 @@ namespace spl.Pages
             Response.Cookies.Append("UserType", "admin");
             Response.Cookies.Append("IsAuthenticated", "1");
 
-            return RedirectToPage("/dashboard");
+            return RedirectToPage("/home/dashboard");
         }
     }
 }

@@ -6,4 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Pages\Course\" />
+    <Folder Include="Pages\Officer\" />
+  </ItemGroup>
+
 </Project>
