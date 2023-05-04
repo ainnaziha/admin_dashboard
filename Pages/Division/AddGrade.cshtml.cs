@@ -11,7 +11,6 @@ namespace spl.Pages.Division
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public List<Bahagian> listBahagian = new();
 
         public AddGradeModel(IConfiguration config)
         {
@@ -33,7 +32,7 @@ namespace spl.Pages.Division
         }
         public JsonResult OnPostCreateGrade(Gred gred)
         {
-            Debug.WriteLine($"AddBranch OnPostCreateGrade: Adding gred");
+            Debug.WriteLine($"AddGrade OnPostCreateGrade: Adding gred");
 
             Dictionary<int, string> map = new()
             {
@@ -54,7 +53,6 @@ namespace spl.Pages.Division
                 
                 String sql = $"INSERT INTO gred (abjad, nombor, pangkat, gelaran_pangkat, jabatan, id_kumpulan, nama_kumpulan) " +
                     $"VALUES ('{gred.Abjad}', '{gred.Nombor}', {(gred.Pangkat?.Length > 0 ? $"'{gred.Pangkat}'" : "NULL")}, {(gred.GelaranPangkat?.Length > 0 ? $"'{gred.GelaranPangkat}'" : "NULL")}, '{gred.Jabatan}', {(gred.IdKumpulan != null ? $"{gred.IdKumpulan}" : "NULL")}, {(namaKumpulan != null ? $"'{namaKumpulan}'" : "NULL")});";
-                Debug.WriteLine($"AddBranch OnPostCreateGrade: {sql}");
 
                 using SqlCommand command = new(sql, connection);
                 command.ExecuteNonQuery();

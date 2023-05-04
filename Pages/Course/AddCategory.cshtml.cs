@@ -1,16 +1,18 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using spl.Model;
 using System.Data.SqlClient;
+using spl.Model;
 using System.Diagnostics;
 
 namespace spl.Pages.Course
 {
-    public class CategoryModel : PageModel
+    [IgnoreAntiforgeryToken]
+    public class AddCategoryModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public List<KategoriKursus> listkategori = new();
-        public CategoryModel(IConfiguration config)
+
+        public AddCategoryModel(IConfiguration config)
         {
             _configuration = config;
         }
@@ -27,43 +29,31 @@ namespace spl.Pages.Course
             {
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
-
-            FetchCategory();
         }
-
-        public void FetchCategory()
+        public JsonResult OnPostCreateCategory(KategoriKursus kategori)
         {
-            Debug.WriteLine("Category FetchCategory: Fetch category list");
+            Debug.WriteLine($"Addcategory OnPostCreateCategory: Adding kategori");
 
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT * FROM kategori_kursus";
+                
+                String sql = $"INSERT INTO kategori_kursus (nama_kategori) " +
+                    $"VALUES ('{kategori.NamaKategori}');";
+                Debug.WriteLine($"AddCategory OnPostCreateGrade: {sql}");
 
                 using SqlCommand command = new(sql, connection);
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        KategoriKursus kategori = new()
-                        {
-                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
-                            NamaKategori = Convert.ToString(reader["nama_kategori"]) ?? "",
-                        };
-
-                        listkategori.Add(kategori);
-                    }
-                }
+                command.ExecuteNonQuery();
 
                 connection.Close();
+                return new JsonResult(new { success = true });
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Category FetchCategory Error: {ex.Message}");
+                return new JsonResult(new { success = false, msg = ex.Message });
             }
-
         }
     }
 }

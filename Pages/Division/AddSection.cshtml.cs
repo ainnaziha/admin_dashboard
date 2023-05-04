@@ -36,7 +36,7 @@ namespace spl.Pages.Division
 
         public void FetchBranch()
         {
-            Debug.WriteLine("Branch FetchBranch: Fetch branch list");
+            Debug.WriteLine("AddSection FetchBranch: Fetch branch list");
 
             try
             {
@@ -64,13 +64,13 @@ namespace spl.Pages.Division
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Branch FetchBranch Error: {ex.Message}");
+                Debug.WriteLine($"AddSection FetchBranch Error: {ex.Message}");
             }
         }
 
         public JsonResult OnPostCreateSection(Cawangan cawangan)
         {
-            Debug.WriteLine($"AddBranch OnPostCreateSection: Adding cawangan {cawangan.NamaCawangan}");
+            Debug.WriteLine($"AddSection OnPostCreateSection: Adding cawangan {cawangan.NamaCawangan}");
 
             try
             {

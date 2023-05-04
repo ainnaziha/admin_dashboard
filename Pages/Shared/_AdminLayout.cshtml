@@ -58,7 +58,7 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class='menu-item@(ViewBag.CurrentMenu == "dashboard" ? " active" : "")'>
-                <a href="../home/dashboard" class="menu-link">
+                <a href="/home/dashboard" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-widget"></i>
                 <div>Dashboard</div>
                 </a>
@@ -68,21 +68,21 @@
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Daftar</span></li>
             
             <li class='menu-item@(ViewBag.CurrentMenu == "branch" ? " active" : "")'>
-              <a href="../division/branch" class="menu-link">
+              <a href="/division/branch" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div>Daftar Bahagian</div>
               </a>
             </li>
 
             <li class='menu-item@(ViewBag.CurrentMenu == "station" ? " active" : "")'>
-              <a href="../division/station" class="menu-link">
+              <a href="/division/station" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-buildings"></i>
                 <div>Daftar Stesen</div>
               </a>
             </li>
 
             <li class='menu-item@(ViewBag.CurrentMenu == "grade" ? " active" : "")'>
-              <a href="../division/grade" class="menu-link">
+              <a href="/division/grade" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-id-card"></i>
                 <div>Daftar Gred</div>
               </a>
@@ -92,14 +92,14 @@
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Kursus</span></li>
 
             <li class='menu-item@(ViewBag.CurrentMenu == "category" ? " active" : "")'>
-              <a href="../course/category" class="menu-link">
+              <a href="/course/category" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
                 <div>Kategori Kursus</div>
               </a>
             </li>
 
             <li class='menu-item@(ViewBag.CurrentMenu == "course" ? " active" : "")'>
-              <a href="../course/course" class="menu-link">
+              <a href="/course/course" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-briefcase"></i>
                 <div>Kursus</div>
               </a>
@@ -109,14 +109,14 @@
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Pegawai</span></li>
 
             <li class='menu-item@(ViewBag.CurrentMenu == "officer" ? " active" : "")'>
-              <a href="../officer/officer" class="menu-link">
+              <a href="/officer/officer" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-check"></i>
                 <div>Senarai Pegawai</div>
               </a>
             </li>
 
             <li class='menu-item@(ViewBag.CurrentMenu == "pic" ? " active" : "")'>
-              <a href="../officer/pic" class="menu-link">
+              <a href="/officer/pic" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-group"></i>
                 <div>Senarai Urusetia</div>
               </a>
@@ -219,7 +219,7 @@
 
     <script>
         function logout() {
-            $.post('../auth/logout').done(function () {
+            $.post('/auth/logout').done(function () {
                window.location = "/";
             });
         }
