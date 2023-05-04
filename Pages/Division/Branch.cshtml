@@ -1,4 +1,84 @@
-﻿@page
+﻿[00:08, 05/05/2023] .B S: using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
+using System.Data.SqlClient;
+using spl.Model;
+using Microsoft.AspNetCore.Mvc;
+
+namespace spl.Pages.Division
+{
+    public class BranchModel : PageModel
+    {
+        private readonly IConfiguration _configuration;
+        public string? Layout { get; private set; }
+        public List<Bahagian> listBahagian = new List<Bahagian>();
+
+        public BranchModel(IConfiguration config)
+        {
+            _configuration = config;
+        }
+
+        public void OnGet()
+        {
+            string userType = Request.Cookies["UserType"] ?? "";
+
+            if (userType == "admin")
+            {
+                Layout = "../Shared/_AdminLayout.cshtml";
+            }
+            else
+            {
+                Layout = "../Shared/_UrusetiaLayout.cshtml";
+            }
+
+            OnGetFetchBranch();
+        }
+
+        public JsonResult OnGetFetchBranch()
+        {
+            Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+                String sql = "SELECT * FROM bahagian";
+
+                using SqlCommand command = new(sql, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Bahagian bahagian = new Bahagian();
+                        bahagian.Id = reader.GetInt32(0);
+                        bahagian.NamaBahagian = reader.GetString(1);
+                        listBahagian.Add(bahagian);
+                    }
+                }
+
+                connection.Close();
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
+            }
+
+        }
+
+        public void OnGetFetchSection()
+        {
+            Debug.WriteLine("Branch OnGetFetchSection: Fetch section list");
+
+        }
+
+        public void OnGetFetchUnit()
+        {
+            Debug.WriteLine("Branch OnGetFetchUnit: Fetch unit list");
+
+        }
+    }
+}
+[00:08, 05/05/2023] .B S: @page
 @model spl.Pages.Division.BranchModel
 @{
     ViewData["Title"] = "Daftar Bahagian";
@@ -64,7 +144,24 @@
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
-                                    
+                                @foreach(var item in Model.listBahagian)
+                                    {
+                                        <tr>
+                                            <td>@item.Id</td>
+                                            <td>@item.NamaBahagian</td>
+                                             <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
                             </tbody>
                         </table>
                     </div>
