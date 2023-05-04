@@ -30,10 +30,10 @@ namespace spl.Pages.Division
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
 
-            OnGetFetchBranch();
+            FetchBranch();
         }
 
-        public JsonResult OnGetFetchBranch()
+        public JsonResult FetchBranch()
         {
             Debug.WriteLine("Branch OnGetFetchBranch: Fetch branch list");
 
@@ -65,12 +65,50 @@ namespace spl.Pages.Division
             {
                 return new JsonResult(new { success = false, msg = ex.Message });
             }
-
         }
 
-        public void OnGetFetchSection()
+        public JsonResult OnGetFetchSection()
         {
             Debug.WriteLine("Branch OnGetFetchSection: Fetch section list");
+
+            List<Cawangan> list = new List<Cawangan>();
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+                String sql = "SELECT c.id, c.nama_cawangan, b.id, b.nama_bahagian " +
+                    "FROM cawangan c " +
+                    "JOIN bahagian b ON c.id_bahagian = b.id;";
+
+                using SqlCommand command = new(sql, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Cawangan cawangan = new()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            NamaCawangan = Convert.ToString(reader["nama_cawangan"]) ?? "",
+                            Bahagian = new Bahagian()
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                NamaBahagian = Convert.ToString(reader["nama_bahagian"]) ?? "",
+                            }
+                        };
+
+                        list.Add(cawangan);
+                    }
+                }
+
+                connection.Close();
+                return new JsonResult(new { success = true, data = list });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
+            }
 
         }
 

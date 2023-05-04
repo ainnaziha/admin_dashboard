@@ -164,17 +164,15 @@
 </div>
 
 <script type="text/javascript">
-    $("#btn-nav-branch").click(function () {
-        $.ajax({
-            type: 'GET',
-            url: "/division/branch?handler=FetchBranch",
-        });
-    });
-
     $("#btn-nav-section").click(function () {
         $.ajax({
             type: 'GET',
             url: "/division/branch?handler=FetchSection",
+            success: function (response) {
+                if (response.success) {
+                    console.log(response.data)
+                }
+            },
         });
     });
 
