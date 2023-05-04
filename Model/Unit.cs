@@ -2,6 +2,10 @@
 {
     public class Unit
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
+        public String NamaUnit { get; set; }
+        public int? IdBahagian { get; set; }
+
+        public Bahagian? Bahagian { get; set; }
     }
 }
