@@ -9,7 +9,6 @@ namespace spl.Pages
 
         public void OnGet()
         {
-            // Get user type from session variable
             string userType = Request.Cookies["UserType"] ?? "";
 
             if (userType == "admin")

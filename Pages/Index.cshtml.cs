@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 
 namespace spl.Pages
 {
@@ -20,7 +21,7 @@ namespace spl.Pages
         public IActionResult OnPost(string username, string password)
         {
             //add asp-page-handler="login" to form if want to use named method
-            Console.WriteLine($"hello user {username} with password {password}");
+            Debug.WriteLine($"Index OnPost: Logging user {username}");
             Response.Cookies.Append("UserType", "admin");
             Response.Cookies.Append("IsAuthenticated", "1");
 
