@@ -16,5 +16,15 @@ namespace spl.Pages
         {
 
         }
+
+        public IActionResult OnPost(string username, string password)
+        {
+            //add asp-page-handler="login" to form if want to use named method
+            Console.WriteLine($"hello user {username} with password {password}");
+            Response.Cookies.Append("UserType", "admin");
+            Response.Cookies.Append("IsAuthenticated", "1");
+
+            return RedirectToPage("/dashboard");
+        }
     }
 }
