@@ -1,0 +1,105 @@
+﻿@page
+@model spl.Pages.Officer.EditOfficerCourseModel
+@{
+    ViewData["Title"] = "Kemaskini Kursus";
+    ViewData["CurrentMenu"] = "course";
+    Layout = Model.Layout;
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <h5 class="mb-0">Kemaskini Kursus</h5>
+            </div>
+            <div class="card-body">
+                <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class="bx bx-error me-2"></i>
+                        <div class="me-auto fw-semibold">Kemaskini Tidak Berjaya</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body" id="error-msg"></div>
+                </div>
+
+                <form id="form-edit-course">
+                    <input type="hidden" name="kp.Id" value="@Model.kp.Id" />
+
+                    <div class="mb-1">
+                        <label class="form-label" for="kursus">Kursus</label>
+                        <select id="kursus" name="kp.IdKursus" class="select2 form-select" asp-for="kp.IdKursus" asp-items="Model.selectKursus" required>
+                            <option value="" hidden>Pilih Kursus</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <p class="text-light fw-semibold" id="course-date">@Model.courseDate</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="lokasi">Lokasi</label>
+                        <input disabled type="text" class="form-control" id="lokasi" value="@Model.lokasi" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="tarikh-mula">Tarikh Mula</label>
+                        <input class="form-control" id="tarikh-mula" type="date" name="kp.TarikhMula" value="@Model.kp.TarikhMula" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="tarikh-akhir">Tarikh Akhir</label>
+                        <input class="form-control" id="tarikh-akhir" type="date" name="kp.TarikhAkhir" value="@Model.kp.TarikhAkhir" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="jumlah-hari">Jumlah Hari</label>
+                        <input type="number" class="form-control" step="any" id="jumlah-hari" name="kp.JumlahHari" value="@Model.kp.JumlahHari" required />
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2">Hantar</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var kursusList = @Json.Serialize(Model.list);
+
+        $('#kursus').on('change', function () {
+            var kursusId = $(this).val();
+
+            var selectedKursus = kursusList.find(kursus => kursus.id == kursusId);
+
+            $("#course-date").text(selectedKursus.tarikhMula + " - " + selectedKursus.tarikhAkhir);
+            $("#lokasi").val(selectedKursus.lokasi);
+        });
+
+        $('#form-edit-course').submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '/officer/editofficercourse/?handler=EditCourse',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = '/officer/officercourse?id=' + @Model.kp.IdPegawai;
+                    } else {
+                        $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                        $('#error-msg').text(response.msg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                    $('#error-msg').text(error);
+                }
+            });
+        })
+    });
+</script>
