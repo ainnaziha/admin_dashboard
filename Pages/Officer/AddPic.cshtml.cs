@@ -51,9 +51,11 @@ namespace spl.Pages.Officer
                 connection.Open();
 
                 String sql = "SELECT b.id AS id_bahagian, b.nama_bahagian, c.id AS id_cawangan, c.nama_cawangan, u.id AS id_unit, u.nama_unit " +
-                                        "FROM bahagian b " +
-                                        "LEFT JOIN cawangan c ON c.id_bahagian = b.id " +
-                                        "LEFT JOIN unit u ON u.id_bahagian = b.id";
+                        "FROM bahagian b " +
+                        "LEFT JOIN cawangan c ON c.id_bahagian = b.id " +
+                        "LEFT JOIN unit u ON u.id_bahagian = b.id " +
+                        "WHERE (b.is_deleted IS NULL OR b.is_deleted <> 1) AND (c.is_deleted IS NULL OR c.is_deleted <> 1) AND (u.is_deleted IS NULL OR u.is_deleted <> 1)";
+
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -119,7 +121,8 @@ namespace spl.Pages.Officer
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT * FROM stesen";
+                String sql = "SELECT * FROM stesen " + 
+                    "WHERE is_deleted IS NULL OR is_deleted <> 1";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())

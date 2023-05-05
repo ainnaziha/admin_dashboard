@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using spl.Model;
 using System.Data.SqlClient;
@@ -5,6 +6,7 @@ using System.Diagnostics;
 
 namespace spl.Pages.Officer
 {
+    [IgnoreAntiforgeryToken]
     public class OfficerModel : PageModel
     {
         private readonly IConfiguration _configuration;
@@ -47,7 +49,8 @@ namespace spl.Pages.Officer
                     "LEFT JOIN bahagian b ON p.id_bahagian = b.id " +
                     "LEFT JOIN cawangan c ON p.id_cawangan = c.id " +
                     "LEFT JOIN unit u ON p.id_unit = u.id " +
-                    "LEFT JOIN stesen s ON p.id_stesen = s.id;";
+                    "LEFT JOIN stesen s ON p.id_stesen = s.id " +
+                    "WHERE p.is_deleted IS NULL OR p.is_deleted <> 1;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -99,6 +102,30 @@ namespace spl.Pages.Officer
             catch (Exception ex)
             {
                 Debug.WriteLine($"Officer FetchOfficer Error: {ex.Message}");
+            }
+        }
+
+        public JsonResult OnPostDelete(int id)
+        {
+            Debug.WriteLine($"Officer OnPostDelete: Delete item {id}");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                String sql = $"UPDATE pegawai SET is_deleted = 1 WHERE id = {id};";
+
+                using SqlCommand command = new(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
             }
         }
     }
