@@ -29,11 +29,6 @@
                         <label class="form-label" for="bahagian">Nama Bahagian</label>
                         <select id="bahagian" name="unit.IdBahagian" class="select2 form-select" asp-for="unit.IdBahagian" asp-items="Model.selectBahagian">
                             <option hidden>Pilih Bahagian</option>
-
-                            @foreach (var item in Model.listBahagian)
-                            {
-                                <option value=@item.Id>@item.NamaBahagian</option>
-                            }
                         </select>
                     </div>
 
