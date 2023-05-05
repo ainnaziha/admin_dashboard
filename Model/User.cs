@@ -3,9 +3,9 @@
     public class User
     {
         public int? Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string? UserType { get; set; }
+        public String Username { get; set; }
+        public String Password { get; set; }
+        public String? UserType { get; set; }
         public int? IdBahagian { get; set; }
         public int? IdCawangan { get; set; }
         public int? IdUnit { get; set; }

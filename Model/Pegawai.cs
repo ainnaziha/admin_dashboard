@@ -3,8 +3,8 @@
     public class Pegawai
     {
         public int? Id { get; set; }
-        public string NamaPegawai { get; set; }
-        public string NoIc { get; set; }
+        public String NamaPegawai { get; set; }
+        public String NoIc { get; set; }
         public int? IdGred { get; set; }
         public int? IdBahagian { get; set; }
         public int? IdCawangan { get; set; }

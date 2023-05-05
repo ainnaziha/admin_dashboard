@@ -1,24 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using spl.Model;
 using System.Data.SqlClient;
+using spl.Model;
 using System.Diagnostics;
+using System.Globalization;
 
-namespace spl.Pages.Course
+namespace spl.Pages.Officer
 {
     [IgnoreAntiforgeryToken]
-    public class CourseModel : PageModel
+    public class AddOfficerCourseModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public List<Kursus> listKursus = new();
-        public CourseModel(IConfiguration config)
+        public List<Kursus> list = new();
+        public string pegawaiId = "";
+
+        public AddOfficerCourseModel(IConfiguration config)
         {
             _configuration = config;
         }
 
         public void OnGet()
         {
+            pegawaiId = Request.Query["id"];
             string userType = Request.Cookies["UserType"] ?? "";
 
             if (userType == "admin")
@@ -32,21 +36,17 @@ namespace spl.Pages.Course
 
             FetchCourse();
         }
-
         public void FetchCourse()
         {
-            Debug.WriteLine("Course FetchCourse: Fetch course list");
+            Debug.WriteLine("AddOfficerCourse FetchCourse: Fetch course list");
 
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-
-                String sql = "SELECT k.id, k.tajuk, k.lokasi, k.tarikh_mula, k.tarikh_akhir, kk.id as id_kategori, kk.nama_kategori " +
-                    "FROM kursus k " +
-                    "LEFT JOIN kategori_kursus kk ON k.id_kategori = kk.id " +
-                    "WHERE k.is_deleted IS NULL OR k.is_deleted <> 1;";
+                String sql = "SELECT * FROM kursus " +
+                    "WHERE is_deleted IS NULL OR is_deleted <> 1;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -60,16 +60,12 @@ namespace spl.Pages.Course
                         {
                             Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
                             Tajuk = Convert.ToString(reader["tajuk"]) ?? "",
-                            Lokasi = Convert.ToString(reader["lokasi"]) ?? "",
                             TarikhMula = tMula.ToString("dd/MM/yyyy"),
                             TarikhAkhir = tAkhir.ToString("dd/MM/yyyy"),
-                            KategoriKursus = reader["id_kategori"] == DBNull.Value ? null : new KategoriKursus() {
-                                Id = reader["id_kategori"] == DBNull.Value ? null : Convert.ToInt32(reader["id_kategori"]),
-                                NamaKategori = Convert.ToString(reader["nama_kategori"]) ?? "",
-                            }
+                            Lokasi = Convert.ToString(reader["lokasi"]) ?? "",
                         };
 
-                        listKursus.Add(kursus);
+                        list.Add(kursus);
                     }
                 }
 
@@ -77,13 +73,14 @@ namespace spl.Pages.Course
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Course FetchCourse Error: {ex.Message}");
+                Debug.WriteLine($"AddOfficerCourse FetchCourse Error: {ex.Message}");
             }
+
         }
 
-        public JsonResult OnPostDelete(int id)
+        public JsonResult OnPostCreateCourse(KursusPegawai kp)
         {
-            Debug.WriteLine($"Course OnPostDelete: Delete item {id}");
+            Debug.WriteLine("AddOfficerCourse OnPostCreateCourse: Adding kursus pegawai");
 
             try
             {
@@ -91,12 +88,18 @@ namespace spl.Pages.Course
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
 
-                String sql = $"UPDATE kursus SET is_deleted = 1 WHERE id = {id};";
+                string dateString = kp.TarikhMula;
+                DateTime dateValue = DateTime.Parse(dateString);
+                int month = dateValue.Month;
+
+                string sql = "INSERT INTO kursus_pegawai (tarikh_mula, tarikh_akhir, id_kursus, id_pegawai, jumlah_hari, bulan) " +
+                             $"VALUES ('{kp.TarikhMula}', '{kp.TarikhAkhir}', {kp.IdKursus}, {kp.IdPegawai}, {kp.JumlahHari}, {month});";
 
                 using SqlCommand command = new(sql, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();
+
                 return new JsonResult(new { success = true });
             }
             catch (Exception ex)

@@ -13,6 +13,7 @@ namespace spl.Pages.Officer
         public string? Layout { get; private set; }
         public List<KursusPegawai> list = new();
         public Pegawai? pegawai { get; private set; }
+        public string url = "";
 
         public OfficerCourseModel(IConfiguration config)
         {
@@ -21,6 +22,7 @@ namespace spl.Pages.Officer
 
         public void OnGet()
         {
+            url = $"/officer/addofficercourse?id={Request.Query["id"]}";
             string userType = Request.Cookies["UserType"] ?? "";
 
             if (userType == "admin")
@@ -125,26 +127,32 @@ namespace spl.Pages.Officer
                     "kp.id_pegawai " +
                     "FROM kursus_pegawai kp " +
                     "JOIN kursus k ON kp.id_kursus = k.id " +
-                    $"WHERE (kp.is_deleted IS NULL OR kp.is_deleted <> 1) AND kp.id = {id};";
+                    $"WHERE (kp.is_deleted IS NULL OR kp.is_deleted <> 1) AND kp.id_pegawai = {id};";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
+                        DateTime tMula = DateTime.Parse(Convert.ToString(reader["tarikh_mula"]) ?? "");
+                        DateTime tAkhir = DateTime.Parse(Convert.ToString(reader["tarikh_akhir"]) ?? "");
+
+                        DateTime tM = DateTime.Parse(Convert.ToString(reader["t_mula"]) ?? "");
+                        DateTime tA = DateTime.Parse(Convert.ToString(reader["t_akhir"]) ?? "");
+
                         KursusPegawai kp = new()
                         {
                             Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
-                            TarikhMula = Convert.ToString(reader["tarikh_mula"]) ?? "",
-                            TarikhAkhir = Convert.ToString(reader["tarikh_akhir"]) ?? "",
+                            TarikhMula = tMula.ToString("dd/MM/yyyy"),
+                            TarikhAkhir = tAkhir.ToString("dd/MM/yyyy"),
                             JumlahHari = reader["jumlah_hari"] == DBNull.Value ? 0 : Convert.ToDouble(reader["jumlah_hari"]),
                             IdPegawai = reader["id_pegawai"] == DBNull.Value ? null : Convert.ToInt32(reader["id_pegawai"]),
                             Kursus = reader["id_kursus"] == DBNull.Value ? null : new Kursus()
                             {
                                 Id = reader["id_kursus"] == DBNull.Value ? null : Convert.ToInt32(reader["id_kursus"]),
                                 Tajuk = Convert.ToString(reader["tajuk"]) ?? "",
-                                TarikhMula = Convert.ToString(reader["t_mula"]) ?? "",
-                                TarikhAkhir = Convert.ToString(reader["t_akhir"]) ?? "",
+                                TarikhMula = tM.ToString("dd/MM/yyyy"),
+                                TarikhAkhir = tA.ToString("dd/MM/yyyy"),
                                 Lokasi = Convert.ToString(reader["lokasi"]) ?? "",
                             }
                         };

@@ -8,9 +8,10 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card py-4 px-4">
+        <h5 class="card-title text-primary text-center">Penyata Kursus Kakitangan JKDM @Model.pegawai?.Stesen?.NamaStesen</h5>
         <div class="card-title d-flex align-items-start justify-content-between">
-            <h5 class="card-title text-primary">Senarai Pegawai</h5>
-            <a class="btn btn-primary" href='/officer/addofficer'>Tambah</a>
+            <p class="text-light fw-semibold">Senarai Kursus</p>
+            <a class="btn btn-primary" href='@Model.url'>Tambah</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
@@ -59,11 +60,11 @@
         if (confirm('Are you sure you want to delete this item?')) {
             $.ajax({
                 type: 'POST',
-                url: '/officer/officercourse/?handler = Delete&id=' + @Request.Query["id"],
+                url: '/officer/officercourse/?handler=Delete&id=' + @Model.pegawai?.Id,
                 data: { id: id },
                 success: function (response) {
                     if (response.success) {
-                        window.location.href = '/officer/officercourse?id=' + @Request.Query["id"];
+                        window.location.href = '/officer/officercourse?id=' + @Model.pegawai?.Id;
                     }
                 },
             });
