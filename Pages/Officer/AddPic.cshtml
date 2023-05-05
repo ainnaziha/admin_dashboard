@@ -43,7 +43,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="bahagian">Bahagian</label>
                         <select id="bahagian" name="user.IdBahagian" class="select2 form-select" required>
-                            <option hidden>Pilih Bahagian</option>
+                            <option value="" hidden>Pilih Bahagian</option>
                             @foreach (var item in Model.listBahagian)
                             {
                                 <option value=@item.Id>@item.NamaBahagian</option>
@@ -68,7 +68,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="stesen">Stesen</label>
                         <select id="stesen" name="user.IdStesen" class="select2 form-select" required>
-                            <option hidden>Pilih Stesen</option>
+                            <option value="" hidden>Pilih Stesen</option>
 
                             @foreach (var item in Model.listStesen)
                             {
