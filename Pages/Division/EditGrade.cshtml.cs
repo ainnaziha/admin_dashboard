@@ -36,7 +36,7 @@ namespace spl.Pages.Division
 
         public void FetchGrade()
         {
-            Debug.WriteLine("AddSection FetchGrade: Fetch grade");
+            Debug.WriteLine("EditGrade FetchGrade: Fetch grade");
 
             String id = Request.Query["id"];
 
@@ -45,7 +45,9 @@ namespace spl.Pages.Division
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = $"SELECT * FROM gred WHERE id='{id}'";
+
+                String sql = $"SELECT * FROM gred WHERE id='{id}';";
+
                 using SqlCommand command = new(sql, connection);
 
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -72,7 +74,7 @@ namespace spl.Pages.Division
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Edut FetchFrade Error: {ex.Message}");
+                Debug.WriteLine($"EditGrade FetchFrade Error: {ex.Message}");
             }
         }
 
