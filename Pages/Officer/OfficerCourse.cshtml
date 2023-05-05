@@ -9,6 +9,13 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card py-4 px-4">
         <h5 class="card-title text-primary text-center">Penyata Kursus Kakitangan JKDM @Model.pegawai?.Stesen?.NamaStesen</h5>
+
+        <p>Nama: <span class="fw-bold">@Model.pegawai?.NamaPegawai</span><br />No IC: <span class="fw-bold">@Model.pegawai?.NoIc</span><br />Gred: <span class="fw-bold">@Model.pegawai?.Gred?.Abjad @Model.pegawai?.Gred?.Nombor</span>
+            <br />Jawatan: <span class="fw-bold">@Model.pegawai?.Gred?.GelaranPangkat</span><br />Stesen: <span class="fw-bold">@Model.pegawai?.Stesen?.NamaStesen</span>
+            <br />Bahagian: <span class="fw-bold">@Model.pegawai?.Bahagian?.NamaBahagian</span><br />Cawangan: <span class="fw-bold">@Model.pegawai?.Cawangan?.NamaCawangan</span>
+            <br />Unit: <span class="fw-bold">@Model.pegawai?.Unit?.NamaUnit</span>
+        </p>
+
         <div class="card-title d-flex align-items-start justify-content-between">
             <p class="text-light fw-semibold">Senarai Kursus</p>
             <a class="btn btn-primary" href='@Model.url'>Tambah</a>
