@@ -57,6 +57,8 @@ namespace spl.Pages.Division
 
                         listStesen.Add(stesen);
                     }
+
+                    reader.Close();
                 }
 
                 connection.Close();

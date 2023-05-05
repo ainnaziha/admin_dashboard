@@ -61,6 +61,8 @@ namespace spl.Pages.Division
 
                         listGred.Add(gred);
                     }
+
+                    reader.Close();
                 }
 
                 connection.Close();

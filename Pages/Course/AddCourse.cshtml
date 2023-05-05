@@ -25,9 +25,9 @@
 
                 <form id="form-add-course">
                     <div class="mb-3">
-                        <label class="form-label" for="pangkat">Kategori <span class="text-muted fw-light">(Optional)</span></label>
-                        <select id="bahagian" name="kursus.IdKategori" class="select2 form-select">
-                            <option hidden>Pilih Bahagian</option>
+                        <label class="form-label" for="kategori">Kategori <span class="text-muted fw-light">(Optional)</span></label>
+                        <select id="kategori" name="kursus.IdKategori" class="select2 form-select">
+                            <option hidden>Pilih Kategori</option>
 
                             @foreach (var item in Model.listKategori)
                             {
@@ -53,7 +53,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="lokasi">Lokasi</label>
-                        <input type="text" class="form-control" id="tajuk" name="kursus.Lokasi" placeholder="Sila isikan Lokasi" required />
+                        <input type="text" class="form-control" id="lokasi" name="kursus.Lokasi" placeholder="Sila isikan Lokasi" required />
                     </div>
 
                     <div class="mt-2">
