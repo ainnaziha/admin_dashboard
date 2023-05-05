@@ -35,7 +35,7 @@ namespace spl.Pages.Division
 
         public void FetchBranch()
         {
-            Debug.WriteLine("AddSection FetchBranch: Fetch branch list");
+            Debug.WriteLine("EditBranch FetchBranch: Fetch branch list");
 
             String id = Request.Query["id"];
             try
