@@ -45,7 +45,7 @@ namespace spl.Pages.Officer
 
         public void FetchUser()
         {
-            Debug.WriteLine("EditSection FetchSection: Fetch section");
+            Debug.WriteLine("EditPic FetchUser: Fetch user");
 
             String id = Request.Query["id"];
             try
@@ -54,7 +54,6 @@ namespace spl.Pages.Officer
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
                 String sql = $"SELECT * FROM users WHERE id='{id}'";
-                Console.WriteLine("sksks " + sql);
                 using SqlCommand command = new(sql, connection);
 
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -66,8 +65,8 @@ namespace spl.Pages.Officer
                             Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
                             Username = Convert.ToString(reader["username"]) ?? "",
                             IdBahagian = reader["id_bahagian"] == DBNull.Value ? null : Convert.ToInt32(reader["id_bahagian"]),
-                            IdCawangan = reader["id_bahagian"] == DBNull.Value ? null : Convert.ToInt32(reader["id_bahagian"]),
-                            IdUnit = reader["id_cawangan"] == DBNull.Value ? null : Convert.ToInt32(reader["id_cawangan"]),
+                            IdCawangan = reader["id_cawangan"] == DBNull.Value ? null : Convert.ToInt32(reader["id_cawangan"]),
+                            IdUnit = reader["id_unit"] == DBNull.Value ? null : Convert.ToInt32(reader["id_unit"]),
                             IdStesen = reader["id_stesen"] == DBNull.Value ? null : Convert.ToInt32(reader["id_stesen"]),
                         };
                     }
@@ -79,7 +78,7 @@ namespace spl.Pages.Officer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"EditSection FetchSection Error: {ex.Message}");
+                Debug.WriteLine($"EditPic FetchUser Error: {ex.Message}");
             }
         }
         public void FetchBranch()
@@ -163,14 +162,14 @@ namespace spl.Pages.Officer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"EditOfficer FetchBranch Error: {ex.Message}");
+                Debug.WriteLine($"EditPic FetchBranch Error: {ex.Message}");
             }
 
         }
 
         public void FetchCawanganUnit()
         {
-            Debug.WriteLine($"EditOfficer FetchCawanganUnit: Fetch cawangan and unit list");
+            Debug.WriteLine($"EditPic FetchCawanganUnit: Fetch cawangan and unit list");
 
             try
             {
@@ -210,13 +209,13 @@ namespace spl.Pages.Officer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"EditOfficer FetchCawanganUnit Error: {ex.Message}");
+                Debug.WriteLine($"EditPic FetchCawanganUnit Error: {ex.Message}");
             }
         }
 
         public void FetchStation()
         {
-            Debug.WriteLine("AddPic FetchStation: Fetch station list");
+            Debug.WriteLine("EditPic FetchStation: Fetch station list");
 
             try
             {
@@ -248,12 +247,12 @@ namespace spl.Pages.Officer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"AddPic FetchStation Error: {ex.Message}");
+                Debug.WriteLine($"EditPic FetchStation Error: {ex.Message}");
             }
         }
         public JsonResult OnPostCawanganUnit(int bahagianId, List<Bahagian> list)
         {
-            Debug.WriteLine($"AddPic OnPostCawanganUnit: Fetch cawangan and unit list {bahagianId} {list.Count}");
+            Debug.WriteLine($"EditPic OnPostCawanganUnit: Fetch cawangan and unit list {bahagianId} {list.Count}");
 
             try
             {
@@ -295,13 +294,13 @@ namespace spl.Pages.Officer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"AddPic OnPostCawanganUnit Error: {ex.Message}");
+                Debug.WriteLine($"EditPic OnPostCawanganUnit Error: {ex.Message}");
                 return new JsonResult(new { success = false });
             }
         }
         public JsonResult OnPostEditUser(User user)
         {
-            Debug.WriteLine($"EditOfficer OnPostEditOfficer: Edit pegawai {user.Username}");
+            Debug.WriteLine($"EditPic OnPostEditOfficer: Edit pegawai {user.Username}");
 
             try
             {
