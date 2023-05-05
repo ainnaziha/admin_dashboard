@@ -30,11 +30,6 @@
                         <label class="form-label" for="kategori">Kategori <span class="text-muted fw-light">(Optional)</span></label>
                         <select id="kategori" name="kursus.IdKategori" class="select2 form-select" asp-for="kursus.IdKategori" asp-items="Model.selectKategori">
                             <option hidden>Pilih Kategori</option>
-
-                            @foreach (var item in Model.listKategori)
-                            {
-                                <option value=@item.Id>@item.NamaKategori</option>
-                            }
                         </select>
                     </div>
 
