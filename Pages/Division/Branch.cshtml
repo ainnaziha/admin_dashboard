@@ -143,7 +143,6 @@
             type: 'GET',
             url: "/division/branch?handler=FetchSection",
             success: function (response) {
-                console.log(response);
                 if (response.success) {
                   const tbodyElement = document.querySelector("#section");
                   response.data.forEach(item => {
@@ -175,8 +174,7 @@
         $.ajax({
             type: 'GET',
             url: "/division/branch?handler=FetchUnit",
-                        success: function (response) {
-                console.log(response);
+            success: function (response) {
                 if (response.success) {
                   const tbodyElement = document.querySelector("#unit");
                   response.data.forEach(item => {

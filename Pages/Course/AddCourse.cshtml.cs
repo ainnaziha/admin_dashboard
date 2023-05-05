@@ -1,16 +1,20 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using spl.Model;
 using System.Data.SqlClient;
+using spl.Model;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace spl.Pages.Course
 {
-    public class CategoryModel : PageModel
+    [IgnoreAntiforgeryToken]
+    public class AddCourseModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
         public List<KategoriKursus> listKategori = new();
-        public CategoryModel(IConfiguration config)
+
+        public AddCourseModel(IConfiguration config)
         {
             _configuration = config;
         }
@@ -30,10 +34,9 @@ namespace spl.Pages.Course
 
             FetchCategory();
         }
-
         public void FetchCategory()
         {
-            Debug.WriteLine("Category FetchCategory: Fetch category list");
+            Debug.WriteLine("AddCourse FetchCategory: Fetch category list");
 
             try
             {
@@ -61,9 +64,36 @@ namespace spl.Pages.Course
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Category FetchCategory Error: {ex.Message}");
+                Debug.WriteLine($"AddCourse FetchCategory Error: {ex.Message}");
             }
 
+        }
+
+        public JsonResult OnPostCreateCourse(Kursus kursus)
+        {
+            Debug.WriteLine($"AddCourse OnPostCreateCourse: Adding kursus {kursus.Tajuk} {kursus.TarikhMula}");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                string sql = $"INSERT INTO kursus (tajuk, tarikh_mula, tarikh_akhir, lokasi, id_kategori) " +
+                             $"VALUES ('{kursus.Tajuk}', '{kursus.TarikhMula}', '{kursus.TarikhAkhir}', '{kursus.Lokasi}', {(kursus.IdKategori != null ? $"{kursus.IdKategori}" : "NULL")});";
+
+
+                using SqlCommand command = new(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
+            }
         }
     }
 }

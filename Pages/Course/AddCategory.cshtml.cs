@@ -32,7 +32,7 @@ namespace spl.Pages.Course
         }
         public JsonResult OnPostCreateCategory(KategoriKursus kategori)
         {
-            Debug.WriteLine($"Addcategory OnPostCreateCategory: Adding kategori");
+            Debug.WriteLine($"AddCategory OnPostCreateCategory: Adding kategori {kategori.NamaKategori}");
 
             try
             {
@@ -42,7 +42,6 @@ namespace spl.Pages.Course
                 
                 String sql = $"INSERT INTO kategori_kursus (nama_kategori) " +
                     $"VALUES ('{kategori.NamaKategori}');";
-                Debug.WriteLine($"AddCategory OnPostCreateGrade: {sql}");
 
                 using SqlCommand command = new(sql, connection);
                 command.ExecuteNonQuery();

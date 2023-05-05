@@ -22,11 +22,11 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @for (int index = 0; index < Model.listkategori.Count(); index++)
+                    @for (int index = 0; index < Model.listKategori.Count(); index++)
                     {
                         <tr>
                             <td>@(index + 1)</td>
-                            <td>@Model.listkategori[index].NamaKategori</td>
+                            <td>@Model.listKategori[index].NamaKategori</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
