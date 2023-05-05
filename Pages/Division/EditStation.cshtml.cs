@@ -38,6 +38,7 @@ namespace spl.Pages.Division
             Debug.WriteLine("AddSection FetchBranch: Fetch branch list");
 
             String id = Request.Query["id"];
+
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
