@@ -1,5 +1,5 @@
 ﻿@page
-@model spl.Pages.Division.EditSectionModel
+@model spl.Pages.Division.EditUnitModel
 @{
     ViewData["Title"] = "Ubahsuai Cawangan";
     ViewData["CurrentMenu"] = "branch";
@@ -23,12 +23,12 @@
                     <div class="toast-body" id="error-msg"></div>
                 </div>
 
-                <form id="form-edit-section">
-                  <input type="hidden" name="cawangan.Id" value="@Model.cawangan.Id" />
+                <form id="form-edit-unit">
+                  <input type="hidden" name="unit.Id" value="@Model.unit.IdBahagian" />
                     <div class="mb-3">
                         <label class="form-label" for="bahagian">Nama Bahagian</label>
-                        <select id="bahagian" name="cawangan.IdBahagian" class="select2 form-select" asp-for="cawangan.IdBahagian" asp-items="Model.selectBahagian" required>
-                            <option value="" hidden>Pilih Bahagian</option>
+                        <select id="bahagian" name="unit.IdBahagian" class="select2 form-select" asp-for="unit.IdBahagian" asp-items="Model.selectBahagian">
+                            <option hidden>Pilih Bahagian</option>
 
                             @foreach (var item in Model.listBahagian)
                             {
@@ -38,8 +38,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="nama-cawangan">Nama Cawangan</label>
-                        <input type="text" class="form-control" id="nama-cawangan" name="cawangan.NamaCawangan"  value="@Model.cawangan.NamaCawangan" required/>
+                        <label class="form-label" for="nama-unit">Nama Unit</label>
+                        <input type="text" class="form-control" id="nama-unit" name="unit.NamaUnit"  value="@Model.unit.NamaUnit" required/>
                     </div>
                 
                     <div class="mt-2">
@@ -53,12 +53,12 @@
 </div>
 
 <script>
-    $('#form-edit-section').submit(function (e) {
+    $('#form-edit-unit').submit(function (e) {
         e.preventDefault();
 
         $.ajax({
             type: 'POST',
-            url: '/division/editsection?handler=UpdateSection',
+            url: '/division/editunit?handler=UpdateUnit',
             data: $(this).serialize(),
             success: function (response) {
                 if (response.success) {
@@ -76,3 +76,4 @@
 
     })
 </script>
+
