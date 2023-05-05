@@ -37,7 +37,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="gred">Gred</label>
                         <select id="gred" name="pegawai.IdGred" class="select2 form-select" required>
-                            <option hidden>Pilih Gred</option>
+                            <option value="" hidden>Pilih Gred</option>
 
                             @foreach (var item in Model.listGred)
                             {
@@ -49,7 +49,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="bahagian">Bahagian</label>
                         <select id="bahagian" name="pegawai.IdBahagian" class="select2 form-select" required>
-                            <option hidden>Pilih Bahagian</option>
+                            <option value="" hidden>Pilih Bahagian</option>
                             @foreach (var item in Model.listBahagian)
                             {
                                 <option value=@item.Id>@item.NamaBahagian</option>
