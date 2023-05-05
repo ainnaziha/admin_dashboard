@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data.SqlClient;
 using spl.Model;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace spl.Pages.Division
 {
@@ -14,6 +15,7 @@ namespace spl.Pages.Division
         public Bahagian bahagian = new();
         public Cawangan cawangan = new();
         public List<Bahagian> listBahagian = new();
+        public SelectList? selectBahagian { get; set; }
 
         public EditSectionModel(IConfiguration config)
         {
@@ -32,14 +34,49 @@ namespace spl.Pages.Division
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
 
-            FetchCurrBranch();
-            FetchBranch();
             FetchSection();
+            FetchBranch();
+        }
+
+        public void FetchSection()
+        {
+            Debug.WriteLine("EditSection FetchSection: Fetch section");
+
+            String id = Request.Query["id"];
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+                String sql = $"SELECT * FROM cawangan WHERE id='{id}'";
+                using SqlCommand command = new(sql, connection);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        cawangan = new()
+                        {
+                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
+                            NamaCawangan = Convert.ToString(reader["nama_cawangan"]) ?? "",
+                            IdBahagian = reader["id_bahagian"] == DBNull.Value ? null : Convert.ToInt32(reader["id_bahagian"]),
+                        };
+                    }
+
+                    reader.Close();
+                }
+
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"EditSection FetchSection Error: {ex.Message}");
+            }
         }
 
         public void FetchBranch()
         {
-            Debug.WriteLine("Branch FetchBranch: Fetch branch list");
+            Debug.WriteLine("EditSection FetchBranch: Fetch branch list");
 
             try
             {
@@ -62,6 +99,7 @@ namespace spl.Pages.Division
                         listBahagian.Add(bahagian);
                     }
 
+                    selectBahagian = new SelectList(listBahagian, "Id", "NamaBahagian", cawangan.IdBahagian);
                     reader.Close();
                 }
 
@@ -69,75 +107,7 @@ namespace spl.Pages.Division
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Branch FetchBranch Error: {ex.Message}");
-            }
-        }
-        public void FetchCurrBranch()
-        {
-            Debug.WriteLine("AddSection FetchBranch: Fetch branch list");
-
-            String id = Request.Query["id"];
-            try
-            {
-                String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
-                connection.Open();
-                String sql = $"SELECT * FROM bahagian WHERE id='{id}'";
-                using SqlCommand command = new(sql, connection);
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        bahagian = new()
-                        {
-                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
-                            NamaBahagian = Convert.ToString(reader["nama_bahagian"]) ?? ""
-                        };
-                    }
-
-                    reader.Close();
-                }
-
-                connection.Close();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"AddUnit FetchBranch Error: {ex.Message}");
-            }
-        }
-        public void FetchSection()
-        {
-            Debug.WriteLine("AddSection FetchBranch: Fetch branch list");
-
-            String id = Request.Query["id"];
-            try
-            {
-                String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
-                connection.Open();
-                String sql = $"SELECT * FROM cawangan WHERE id='{id}'";
-                using SqlCommand command = new(sql, connection);
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        cawangan = new()
-                        {
-                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
-                            NamaCawangan = Convert.ToString(reader["nama_cawangan"]) ?? ""
-                        };
-                    }
-
-                    reader.Close();
-                }
-
-                connection.Close();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"AddUnit FetchBranch Error: {ex.Message}");
+                Debug.WriteLine($"EditSection FetchBranch Error: {ex.Message}");
             }
         }
 
