@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using spl.Model;
 using System.Data.SqlClient;
@@ -5,6 +6,7 @@ using System.Diagnostics;
 
 namespace spl.Pages.Course
 {
+    [IgnoreAntiforgeryToken]
     public class CourseModel : PageModel
     {
         private readonly IConfiguration _configuration;
@@ -43,7 +45,8 @@ namespace spl.Pages.Course
 
                 String sql = "SELECT k.id, k.tajuk, k.lokasi, k.tarikh_mula, k.tarikh_akhir, kk.id as id_kategori, kk.nama_kategori " +
                     "FROM kursus k " +
-                    "LEFT JOIN kategori_kursus kk ON k.id_kategori = kk.id;";
+                    "LEFT JOIN kategori_kursus kk ON k.id_kategori = kk.id " +
+                    "WHERE k.is_deleted IS NULL OR k.is_deleted <> 1;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -72,6 +75,30 @@ namespace spl.Pages.Course
             catch (Exception ex)
             {
                 Debug.WriteLine($"Course FetchCourse Error: {ex.Message}");
+            }
+        }
+
+        public JsonResult OnPostDelete(int id)
+        {
+            Debug.WriteLine($"Course OnPostDelete: Delete item {id}");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                String sql = $"UPDATE kursus SET is_deleted = 1 WHERE id = {id};";
+
+                using SqlCommand command = new(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
             }
         }
     }
