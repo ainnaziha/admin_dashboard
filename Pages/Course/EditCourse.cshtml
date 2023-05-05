@@ -1,0 +1,93 @@
+﻿@page
+@model spl.Pages.Course.EditCourseModel
+@{
+    ViewData["Title"] = "Kemaskini Kursus";
+    ViewData["CurrentMenu"] = "course";
+    Layout = Model.Layout;
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <h5 class="mb-0">Kemaskini Kursus</h5>
+            </div>
+            <div class="card-body">
+                <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class="bx bx-error me-2"></i>
+                        <div class="me-auto fw-semibold">Daftar Tidak Berjaya</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body" id="error-msg"></div>
+                </div>
+
+                <form id="form-edit-course">
+                    <input type="hidden" name="kursus.Id" value="@Model.kursus.Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label" for="kategori">Kategori <span class="text-muted fw-light">(Optional)</span></label>
+                        <select id="kategori" name="kursus.IdKategori" class="select2 form-select" asp-for="kursus.IdKategori" asp-items="Model.selectKategori">
+                            <option hidden>Pilih Kategori</option>
+
+                            @foreach (var item in Model.listKategori)
+                            {
+                                <option value=@item.Id>@item.NamaKategori</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="tajuk">Tajuk</label>
+                        <input type="text" class="form-control" id="tajuk" name="kursus.Tajuk" value="@Model.kursus.Tajuk" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="tarikh-mula">Tarikh Mula</label>
+                        <input class="form-control" id="tarikh-mula" type="date" name="kursus.TarikhMula" value="@Model.kursus.TarikhMula" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="tarikh-akhir">Tarikh Akhir</label>
+                        <input class="form-control" id="tarikh-akhir" type="date" name="kursus.TarikhAkhir" value="@Model.kursus.TarikhAkhir" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="lokasi">Lokasi</label>
+                        <input type="text" class="form-control" id="lokasi" name="kursus.Lokasi" value="@Model.kursus.Lokasi" required />
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2">Hantar</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#form-edit-course').submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: '/course/editcourse?handler=EditCourse',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = '/course/course';
+                } else {
+                    $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                    $('#error-msg').text(response.msg);
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
+                $('#error-msg').text(error);
+            }
+        });
+    })
+</script>
