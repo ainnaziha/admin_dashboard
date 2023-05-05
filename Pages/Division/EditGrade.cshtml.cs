@@ -7,16 +7,17 @@ using System.Diagnostics;
 namespace spl.Pages.Division
 {
     [IgnoreAntiforgeryToken]
-    public class EditStationModel : PageModel
+    public class EditGradeModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public Stesen stesen = new();
+        public Gred gred = new();
 
-        public EditStationModel(IConfiguration config)
+        public EditGradeModel(IConfiguration config)
         {
             _configuration = config;
         }
+
         public void OnGet()
         {
             string userType = Request.Cookies["UserType"] ?? "";
@@ -30,12 +31,12 @@ namespace spl.Pages.Division
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
             }
 
-            FetchStation();
+            FetchGrade();
         }
 
-        public void FetchStation()
+        public void FetchGrade()
         {
-            Debug.WriteLine("EditStation FetchStation: Fetch station");
+            Debug.WriteLine("AddSection FetchGrade: Fetch grade");
 
             String id = Request.Query["id"];
 
@@ -44,17 +45,23 @@ namespace spl.Pages.Division
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = $"SELECT * FROM stesen WHERE id='{id}'";
+                String sql = $"SELECT * FROM gred WHERE id='{id}'";
                 using SqlCommand command = new(sql, connection);
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        stesen = new()
+                        gred = new()
                         {
                             Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
-                            NamaStesen = Convert.ToString(reader["nama_stesen"]) ?? ""
+                            Abjad = Convert.ToString(reader["abjad"]) ?? "",
+                            Nombor = Convert.ToString(reader["nombor"]) ?? "",
+                            Pangkat = reader["pangkat"] == DBNull.Value ? null : Convert.ToString(reader["pangkat"]),
+                            GelaranPangkat = reader["gelaran_pangkat"] == DBNull.Value ? null : Convert.ToString(reader["gelaran_pangkat"]),
+                            Jabatan = Convert.ToString(reader["jabatan"]) ?? "",
+                            IdKumpulan = reader["id_kumpulan"] == DBNull.Value ? null : Convert.ToInt32(reader["id_kumpulan"]),
+                            NamaKumpulan = reader["nama_kumpulan"] == DBNull.Value ? null : Convert.ToString(reader["nama_kumpulan"])
                         };
                     }
 
@@ -65,13 +72,24 @@ namespace spl.Pages.Division
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"EditStation FetchStation Error: {ex.Message}");
+                Debug.WriteLine($"Edut FetchFrade Error: {ex.Message}");
             }
         }
 
-        public JsonResult OnPostUpdateStation(Stesen stesen)
+        public JsonResult OnPostEditGrade(Gred gred)
         {
-            Debug.WriteLine($"EditStation OnPostUpdateStation: Edit Station {stesen.NamaStesen}");
+            Debug.WriteLine($"EditGrade OnPostEditGrade: Edit gred");
+
+            Dictionary<int, string> map = new()
+            {
+                { 0, "" },
+                { 1, "JUSA" },
+                { 2, "PENGURUSAN DAN PROFESIONAL" },
+                { 3, "PELAKSANA" }
+            };
+
+            String? namaKumpulan = map[gred.IdKumpulan ?? 0];
+            namaKumpulan = namaKumpulan == "" ? null : namaKumpulan;
 
             try
             {
@@ -79,7 +97,10 @@ namespace spl.Pages.Division
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
 
-                String sql = $"UPDATE stesen SET nama_stesen = '{stesen.NamaStesen}' WHERE id = {stesen.Id};";
+                String sql = $"UPDATE gred SET abjad = '{gred.Abjad}', nombor = '{gred.Nombor}', pangkat = {(gred.Pangkat?.Length > 0 ? $"'{gred.Pangkat}'" : "NULL")}, " +
+                    $"gelaran_pangkat = {(gred.GelaranPangkat?.Length > 0 ? $"'{gred.GelaranPangkat}'" : "NULL")}, jabatan = '{gred.Jabatan}', " +
+                    $"id_kumpulan = {(gred.IdKumpulan != null ? $"{gred.IdKumpulan}" : "NULL")}, nama_kumpulan = {(namaKumpulan != null ? $"'{namaKumpulan}'" : "NULL")} " +
+                    $"WHERE id = {gred.Id};";
 
                 using SqlCommand command = new(sql, connection);
                 command.ExecuteNonQuery();
