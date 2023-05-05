@@ -43,7 +43,8 @@ namespace spl.Pages.Division
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT * FROM bahagian";
+                String sql = "SELECT * FROM bahagian " +
+                        "WHERE is_deleted IS NULL OR is_deleted <> 1;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -58,6 +59,8 @@ namespace spl.Pages.Division
 
                         listBahagian.Add(bahagian);
                     }
+
+                    reader.Close();
                 }
 
                 connection.Close();
