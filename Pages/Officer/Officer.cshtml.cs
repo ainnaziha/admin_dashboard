@@ -33,7 +33,7 @@ namespace spl.Pages.Officer
 
         public void FetchOfficer()
         {
-            Debug.WriteLine("Officer FetchOfficer: Fetch grade list");
+            Debug.WriteLine("Officer FetchOfficer: Fetch officer list");
 
             try
             {
@@ -47,7 +47,7 @@ namespace spl.Pages.Officer
                     "LEFT JOIN bahagian b ON p.id_bahagian = b.id " +
                     "LEFT JOIN cawangan c ON p.id_cawangan = c.id " +
                     "LEFT JOIN unit u ON p.id_unit = u.id " +
-                    "LEFT JOIN stesen s ON p.id_stesen = s.id";
+                    "LEFT JOIN stesen s ON p.id_stesen = s.id;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())

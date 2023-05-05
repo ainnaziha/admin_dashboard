@@ -1,10 +1,19 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using spl.Model;
+using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace spl.Pages.Officer
 {
     public class PicModel : PageModel
     {
+        private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
+        public List<User> listUser = new();
+        public PicModel(IConfiguration config)
+        {
+            _configuration = config;
+        }
 
         public void OnGet()
         {
@@ -17,6 +26,72 @@ namespace spl.Pages.Officer
             else
             {
                 Layout = "../Shared/_UrusetiaLayout.cshtml";
+            }
+
+            FetchPic();
+        }
+
+        public void FetchPic()
+        {
+            Debug.WriteLine("Pic FetchPic: Fetch pic list");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                String sql = "SELECT p.id, p.username, " +
+                    "p.id_bahagian, b.nama_bahagian, p.id_cawangan, c.nama_cawangan, p.id_unit, u.nama_unit, p.id_stesen, s.nama_stesen " +
+                    "FROM users p " +
+                    "LEFT JOIN bahagian b ON p.id_bahagian = b.id " +
+                    "LEFT JOIN cawangan c ON p.id_cawangan = c.id " +
+                    "LEFT JOIN unit u ON p.id_unit = u.id " +
+                    "LEFT JOIN stesen s ON p.id_stesen = s.id " +
+                    "WHERE p.user_type = 'urusetia';";
+
+                using SqlCommand command = new(sql, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        User user = new()
+                        {
+                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
+                            Username = Convert.ToString(reader["username"]) ?? "",
+                            Bahagian = reader["id_bahagian"] == DBNull.Value ? null : new Bahagian()
+                            {
+                                Id = reader["id_bahagian"] == DBNull.Value ? null : Convert.ToInt32(reader["id_bahagian"]),
+                                NamaBahagian = Convert.ToString(reader["nama_bahagian"]) ?? "",
+                            },
+                            Cawangan = reader["id_cawangan"] == DBNull.Value ? null : new Cawangan()
+                            {
+                                Id = reader["id_cawangan"] == DBNull.Value ? null : Convert.ToInt32(reader["id_cawangan"]),
+                                NamaCawangan = Convert.ToString(reader["nama_cawangan"]) ?? "",
+                            },
+                            Unit = reader["id_unit"] == DBNull.Value ? null : new Unit()
+                            {
+                                Id = reader["id_unit"] == DBNull.Value ? null : Convert.ToInt32(reader["id_unit"]),
+                                NamaUnit = Convert.ToString(reader["nama_unit"]) ?? "",
+                            },
+                            Stesen = reader["id_stesen"] == DBNull.Value ? null : new Stesen()
+                            {
+                                Id = reader["id_stesen"] == DBNull.Value ? null : Convert.ToInt32(reader["id_stesen"]),
+                                NamaStesen = Convert.ToString(reader["nama_stesen"]) ?? "",
+                            },
+                        };
+
+                        listUser.Add(user);
+                    }
+
+                    reader.Close();
+                }
+
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Pic FetchPic Error: {ex.Message}");
             }
         }
     }

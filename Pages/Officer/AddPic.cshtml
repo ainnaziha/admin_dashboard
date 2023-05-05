@@ -1,8 +1,8 @@
 ﻿@page
-@model spl.Pages.Officer.AddOfficerModel
+@model spl.Pages.Officer.AddPicMode
 @{
-    ViewData["Title"] = "Tambah Pegawai";
-    ViewData["CurrentMenu"] = "officer";
+    ViewData["Title"] = "Tambah Urusetia";
+    ViewData["CurrentMenu"] = "pic";
     Layout = Model.Layout;
 }
 
@@ -11,7 +11,7 @@
     <div class="col-xl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center">
-                <h5 class="mb-0">Tambah Pegawai</h5>
+                <h5 class="mb-0">Tambah Urusetia</h5>
             </div>
             <div class="card-body">
                 <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
@@ -23,32 +23,26 @@
                     <div class="toast-body" id="error-msg"></div>
                 </div>
 
-                <form id="form-add-officer">
+                <form id="form-add-pic">
                     <div class="mb-3">
-                        <label class="form-label" for="nama">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="pegawai.NamaPegawai" placeholder="Sila isikan nama" required />
+                        <label class="form-label" for="nama">Username</label>
+                        <input type="text" class="form-control" id="nama" name="user.Username" placeholder="Sila isikan username" required />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="no_ic">Nombor IC</label>
-                        <input type="text" class="form-control" id="no_ic" name="pegawai.NoIc" placeholder="Sila isikan nombor IC" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label" for="gred">Gred</label>
-                        <select id="gred" name="pegawai.IdGred" class="select2 form-select" required>
-                            <option hidden>Pilih Gred</option>
-
-                            @foreach (var item in Model.listGred)
-                            {
-                                <option value=@item.Id>@item.Abjad @item.Nombor @(item.GelaranPangkat != null ? $"({@item.GelaranPangkat})" : "")</option>
-                            }
-                        </select>
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password"
+                               id="password"
+                               class="form-control"
+                               name="user.Password"
+                               placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                               aria-describedby="password"
+                               required />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" for="bahagian">Bahagian</label>
-                        <select id="bahagian" name="pegawai.IdBahagian" class="select2 form-select" required>
+                        <select id="bahagian" name="user.IdBahagian" class="select2 form-select" required>
                             <option hidden>Pilih Bahagian</option>
                             @foreach (var item in Model.listBahagian)
                             {
@@ -59,21 +53,21 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="cawangan">Cawangan <span class="text-muted fw-light">(Optional)</span></label>
-                        <select id="cawangan" name="pegawai.IdCawangan" class="select2 form-select">
+                        <select id="cawangan" name="user.IdCawangan" class="select2 form-select">
                             <option hidden>Pilih Cawangan</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" for="unit">Unit <span class="text-muted fw-light">(Optional)</span></label>
-                        <select id="unit" name="pegawai.IdUnit" class="select2 form-select">
+                        <select id="unit" name="user.IdUnit" class="select2 form-select">
                             <option hidden>Pilih Unit</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="stesen">Stesen <span class="text-muted fw-light">(Optional)</span></label>
-                        <select id="stesen" name="pegawai.Stesen" class="select2 form-select">
+                        <label class="form-label" for="stesen">Stesen</label>
+                        <select id="stesen" name="user.IdStesen" class="select2 form-select" required>
                             <option hidden>Pilih Stesen</option>
 
                             @foreach (var item in Model.listStesen)
@@ -101,7 +95,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/officer/addofficer?handler=CawanganUnit',
+                url: '/officer/addpic?handler=CawanganUnit',
                 data: {
                     bahagianId: bahagianId,
                     list: listBahagian
@@ -130,16 +124,16 @@
         });
     });
 
-    $('#form-add-officer').submit(function (e) {
+    $('#form-add-pic').submit(function (e) {
         e.preventDefault();
 
         $.ajax({
             type: 'POST',
-            url: '/officer/addofficer?handler=CreateOfficer',
+            url: '/officer/addpic?handler=CreatePic',
             data: $(this).serialize(),
             success: function (response) {
                 if (response.success) {
-                    window.location.href = '/officer/officer';
+                    window.location.href = '/officer/pic';
                 } else {
                     $('#error-toast').removeClass('hide').addClass('bs-toast toast fade bg-danger show my-4');
                     $('#error-msg').text(response.msg);
