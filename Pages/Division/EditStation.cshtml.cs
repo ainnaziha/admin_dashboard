@@ -38,6 +38,7 @@ namespace spl.Pages.Division
             Debug.WriteLine("AddSection FetchBranch: Fetch branch list");
 
             String id = Request.Query["id"];
+
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -70,7 +71,7 @@ namespace spl.Pages.Division
 
         public JsonResult OnPostUpdateStation(Stesen stesen)
         {
-            Debug.WriteLine($"UpdateBranch OnPostUpdateBranch: Edit Station {stesen.NamaStesen}");
+            Debug.WriteLine($"UpdateBranch OnPostUpdateStation: Edit Station {stesen.NamaStesen}");
 
             try
             {
@@ -78,7 +79,7 @@ namespace spl.Pages.Division
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
 
-                String sql = $"UPDATE stesen SET nama_stesen='{stesen.NamaStesen}' WHERE id= {stesen.Id};";
+                String sql = $"UPDATE stesen SET nama_stesen = '{stesen.NamaStesen}' WHERE id = {stesen.Id};";
 
                 using SqlCommand command = new(sql, connection);
                 command.ExecuteNonQuery();

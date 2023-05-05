@@ -7,12 +7,14 @@ using System.Diagnostics;
 namespace spl.Pages.Officer
 {
     [IgnoreAntiforgeryToken]
-    public class OfficerModel : PageModel
+    public class OfficerCourseModel : PageModel
     {
         private readonly IConfiguration _configuration;
         public string? Layout { get; private set; }
-        public List<Pegawai> listPegawai = new();
-        public OfficerModel(IConfiguration config)
+        public List<KursusPegawai> list = new();
+        public Pegawai? pegawai { get; private set; }
+
+        public OfficerCourseModel(IConfiguration config)
         {
             _configuration = config;
         }
@@ -31,11 +33,14 @@ namespace spl.Pages.Officer
             }
 
             FetchOfficer();
+            FetchCourse();
         }
 
         public void FetchOfficer()
         {
-            Debug.WriteLine("Officer FetchOfficer: Fetch officer list");
+            Debug.WriteLine("OfficerCourse FetchOfficer: Fetch officer");
+
+            String id = Request.Query["id"];
 
             try
             {
@@ -50,14 +55,14 @@ namespace spl.Pages.Officer
                     "LEFT JOIN cawangan c ON p.id_cawangan = c.id " +
                     "LEFT JOIN unit u ON p.id_unit = u.id " +
                     "LEFT JOIN stesen s ON p.id_stesen = s.id " +
-                    "WHERE p.is_deleted IS NULL OR p.is_deleted <> 1;";
+                    $"WHERE p.id = {id};";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        Pegawai pegawai = new()
+                        pegawai = new()
                         {
                             Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
                             NamaPegawai = Convert.ToString(reader["nama_pegawai"]) ?? "",
@@ -90,8 +95,6 @@ namespace spl.Pages.Officer
                                 NamaStesen = Convert.ToString(reader["nama_stesen"]) ?? "",
                             },
                         };
-
-                        listPegawai.Add(pegawai);
                     }
 
                     reader.Close();
@@ -101,13 +104,15 @@ namespace spl.Pages.Officer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Officer FetchOfficer Error: {ex.Message}");
+                Debug.WriteLine($"OfficerCourse FetchOfficer Error: {ex.Message}");
             }
         }
 
-        public JsonResult OnPostDelete(int id)
+        public void FetchCourse()
         {
-            Debug.WriteLine($"Officer OnPostDelete: Delete item {id}");
+            Debug.WriteLine("OfficerCourse FetchCourse: Fetch course list");
+
+            String id = Request.Query["id"];
 
             try
             {
@@ -115,7 +120,60 @@ namespace spl.Pages.Officer
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
 
-                String sql = $"UPDATE pegawai SET is_deleted = 1 WHERE id = {id};";
+                String sql = "SELECT kp.id, kp.tarikh_mula, kp.tarikh_akhir, kp.jumlah_hari, " +
+                    "kp.id_kursus, k.tajuk, k.tarikh_mula AS t_mula, k.tarikh_akhir AS t_akhir, k.lokasi, " +
+                    "kp.id_pegawai " +
+                    "FROM kursus_pegawai kp " +
+                    "JOIN kursus k ON kp.id_kursus = k.id " +
+                    $"WHERE (kp.is_deleted IS NULL OR kp.is_deleted <> 1) AND kp.id = {id};";
+
+                using SqlCommand command = new(sql, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        KursusPegawai kp = new()
+                        {
+                            Id = reader["id"] == DBNull.Value ? null : Convert.ToInt32(reader["id"]),
+                            TarikhMula = Convert.ToString(reader["tarikh_mula"]) ?? "",
+                            TarikhAkhir = Convert.ToString(reader["tarikh_akhir"]) ?? "",
+                            JumlahHari = reader["jumlah_hari"] == DBNull.Value ? 0 : Convert.ToDouble(reader["jumlah_hari"]),
+                            IdPegawai = reader["id_pegawai"] == DBNull.Value ? null : Convert.ToInt32(reader["id_pegawai"]),
+                            Kursus = reader["id_kursus"] == DBNull.Value ? null : new Kursus()
+                            {
+                                Id = reader["id_kursus"] == DBNull.Value ? null : Convert.ToInt32(reader["id_kursus"]),
+                                Tajuk = Convert.ToString(reader["tajuk"]) ?? "",
+                                TarikhMula = Convert.ToString(reader["t_mula"]) ?? "",
+                                TarikhAkhir = Convert.ToString(reader["t_akhir"]) ?? "",
+                                Lokasi = Convert.ToString(reader["lokasi"]) ?? "",
+                            }
+                        };
+
+                        list.Add(kp);
+                    }
+
+                    reader.Close();
+                }
+
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"OfficerCourse FetchCourse Error: {ex.Message}");
+            }
+        }
+
+        public JsonResult OnPostDelete(int id)
+        {
+            Debug.WriteLine($"OfficerCourse OnPostDelete: Delete item {id}");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                String sql = $"UPDATE kursus_pegawai SET is_deleted = 1 WHERE id = {id};";
 
                 using SqlCommand command = new(sql, connection);
                 command.ExecuteNonQuery();

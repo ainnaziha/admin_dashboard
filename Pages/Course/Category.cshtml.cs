@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using spl.Model;
 using System.Data.SqlClient;
@@ -5,6 +6,7 @@ using System.Diagnostics;
 
 namespace spl.Pages.Course
 {
+    [IgnoreAntiforgeryToken]
     public class CategoryModel : PageModel
     {
         private readonly IConfiguration _configuration;
@@ -40,7 +42,8 @@ namespace spl.Pages.Course
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT * FROM kategori_kursus";
+                String sql = "SELECT * FROM kategori_kursus " +
+                    "WHERE is_deleted IS NULL OR is_deleted <> 1;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -55,6 +58,8 @@ namespace spl.Pages.Course
 
                         listKategori.Add(kategori);
                     }
+
+                    reader.Close();
                 }
 
                 connection.Close();
@@ -64,6 +69,30 @@ namespace spl.Pages.Course
                 Debug.WriteLine($"Category FetchCategory Error: {ex.Message}");
             }
 
+        }
+
+        public JsonResult OnPostDelete(int id)
+        {
+            Debug.WriteLine($"Category OnPostDelete: Delete item {id}");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                String sql = $"UPDATE kategori_kursus SET is_deleted = 1 WHERE id = {id};";
+
+                using SqlCommand command = new(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
+            }
         }
     }
 }

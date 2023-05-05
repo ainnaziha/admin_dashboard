@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using spl.Model;
 using System.Data.SqlClient;
@@ -5,6 +6,7 @@ using System.Diagnostics;
 
 namespace spl.Pages.Division
 {
+    [IgnoreAntiforgeryToken]
     public class GradeModel : PageModel
     {
         private readonly IConfiguration _configuration;
@@ -40,7 +42,8 @@ namespace spl.Pages.Division
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT * FROM gred";
+                String sql = "SELECT * FROM gred " +
+                     "WHERE is_deleted IS NULL OR is_deleted <> 1;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -70,6 +73,30 @@ namespace spl.Pages.Division
             catch (Exception ex)
             {
                 Debug.WriteLine($"Grade FetchGrade Error: {ex.Message}");
+            }
+        }
+
+        public JsonResult OnPostDelete(int id)
+        {
+            Debug.WriteLine($"Grade OnPostDelete: Delete item {id}");
+
+            try
+            {
+                String connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                String sql = $"UPDATE gred SET is_deleted = 1 WHERE id = {id};";
+
+                using SqlCommand command = new(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, msg = ex.Message });
             }
         }
     }

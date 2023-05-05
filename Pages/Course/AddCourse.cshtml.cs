@@ -43,7 +43,8 @@ namespace spl.Pages.Course
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
-                String sql = "SELECT * FROM kategori_kursus";
+                String sql = "SELECT * FROM kategori_kursus " +
+                    "WHERE is_deleted IS NULL OR is_deleted <> 1;";
 
                 using SqlCommand command = new(sql, connection);
                 using (SqlDataReader reader = command.ExecuteReader())

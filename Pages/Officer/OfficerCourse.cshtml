@@ -1,40 +1,40 @@
 ﻿@page
-@model spl.Pages.Officer.PicModel
+@model spl.Pages.Officer.OfficerCourseModel
 @{
-    ViewData["Title"] = "Daftar Urusetia";
-    ViewData["CurrentMenu"] = "pic";
+    ViewData["Title"] = "Daftar Kursus Pegawai";
+    ViewData["CurrentMenu"] = "officer";
     Layout = Model.Layout;
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card py-4 px-4">
         <div class="card-title d-flex align-items-start justify-content-between">
-            <h5 class="card-title text-primary">Senarai Urusetia</h5>
-            <a class="btn btn-primary" href='/officer/addpic'>Tambah</a>
+            <h5 class="card-title text-primary">Senarai Pegawai</h5>
+            <a class="btn btn-primary" href='/officer/addofficer'>Tambah</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Username</th>
-                        <th>Bahagian</th>
-                        <th>Cawangan</th>
-                        <th>Unit</th>
-                        <th>Stesen</th>
+                        <th>Tajuk Kursus</th>
+                        <th>Tarikh Mula</th>
+                        <th>Tarikh Akhri</th>
+                        <th>Jumlah Hari</th>
+                        <th>Lokasi</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @for (int index = 0; index < Model.listUser.Count(); index++)
+                    @for (int index = 0; index < Model.list.Count(); index++)
                     {
                         <tr>
                             <td>@(index + 1)</td>
-                            <td>@Model.listUser[index].Username</td>
-                            <td>@(Model.listUser[index].Bahagian?.NamaBahagian ?? "N/A")</td>
-                            <td>@(Model.listUser[index].Cawangan?.NamaCawangan ?? "N/A")</td>
-                            <td>@(Model.listUser[index].Unit?.NamaUnit ?? "N/A")</td>
-                            <td>@Model.listUser[index].Stesen?.NamaStesen</td>
+                            <td>@Model.list[index].Kursus?.Tajuk</td>
+                            <td>@Model.list[index].TarikhMula</td>
+                            <td>@Model.list[index].TarikhAkhir</td>
+                            <td>@Model.list[index].JumlahHari</td>
+                            <td>@Model.list[index].Kursus?.Lokasi</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -42,7 +42,7 @@
                                     </button>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" href="javascript:void(0);" onclick="deleteItem(@Model.listUser[index].Id)"><i class="bx bx-trash me-1"></i> Delete</a>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="deleteItem(@Model.list[index].Id)"><i class="bx bx-trash me-1"></i> Delete</a>
                                     </div>
                                 </div>
                             </td>
@@ -59,11 +59,11 @@
         if (confirm('Are you sure you want to delete this item?')) {
             $.ajax({
                 type: 'POST',
-                url: '/officer/pic?handler=Delete',
+                url: '/officer/officercourse/?handler = Delete&id=' + @Request.Query["id"],
                 data: { id: id },
                 success: function (response) {
                     if (response.success) {
-                        window.location.href = '/officer/pic';
+                        window.location.href = '/officer/officercourse?id=' + @Request.Query["id"];
                     }
                 },
             });

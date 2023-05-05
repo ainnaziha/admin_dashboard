@@ -36,7 +36,7 @@ namespace spl.Pages
                 using SqlConnection connection = new(connectionString);
                 connection.Open();
 
-                String sql = $"SELECT TOP 1 * FROM users WHERE username = '{user.Username}' AND password = '{password}'";
+                String sql = $"SELECT TOP 1 * FROM users WHERE username = '{user.Username}' AND password = '{password}' AND (is_deleted IS NULL OR is_deleted <> 1);";
 
                 using SqlCommand command = new(sql, connection);
                 using SqlDataReader reader = command.ExecuteReader();
