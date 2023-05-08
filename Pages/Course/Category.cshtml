@@ -1,7 +1,7 @@
 ﻿@page
 @model spl.Pages.Course.CategoryModel
 @{
-    ViewData["Title"] = "Daftar Kategori Kursus";
+    ViewData["Title"] = "Course Category";
     ViewData["CurrentMenu"] = "category";
     Layout = Model.Layout;
 }
@@ -9,15 +9,15 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card py-4 px-4">
         <div class="card-title d-flex align-items-start justify-content-between">
-            <h5 class="card-title text-primary">Senarai Kategori Kursus</h5>
-            <a class="btn btn-primary" href='/course/addcategory'>Tambah</a>
+            <h5 class="card-title text-primary">Manage Course Category</h5>
+            <a class="btn btn-primary" href='/course/addcategory'>Add</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Kategori</th>
+                        <th>Category</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

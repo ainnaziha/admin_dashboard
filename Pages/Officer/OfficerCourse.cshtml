@@ -1,35 +1,35 @@
 ﻿@page
 @model spl.Pages.Officer.OfficerCourseModel
 @{
-    ViewData["Title"] = "Daftar Kursus Pegawai";
+    ViewData["Title"] = "Officer's Course";
     ViewData["CurrentMenu"] = "officer";
     Layout = Model.Layout;
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card py-4 px-4">
-        <h5 class="card-title text-primary text-center">Penyata Kursus Kakitangan JKDM @Model.pegawai?.Stesen?.NamaStesen</h5>
+        <h5 class="card-title text-primary text-center">Course Report (@Model.pegawai?.Stesen?.NamaStesen)</h5>
 
-        <p>Nama: <span class="fw-bold">@Model.pegawai?.NamaPegawai</span><br />No IC: <span class="fw-bold">@Model.pegawai?.NoIc</span><br />Gred: <span class="fw-bold">@Model.pegawai?.Gred?.Abjad @Model.pegawai?.Gred?.Nombor</span>
-            <br />Jawatan: <span class="fw-bold">@Model.pegawai?.Gred?.GelaranPangkat</span><br />Stesen: <span class="fw-bold">@Model.pegawai?.Stesen?.NamaStesen</span>
-            <br />Bahagian: <span class="fw-bold">@Model.pegawai?.Bahagian?.NamaBahagian</span><br />Cawangan: <span class="fw-bold">@Model.pegawai?.Cawangan?.NamaCawangan</span>
+        <p>Name: <span class="fw-bold">@Model.pegawai?.NamaPegawai</span><br />IC No: <span class="fw-bold">@Model.pegawai?.NoIc</span><br />Grade: <span class="fw-bold">@Model.pegawai?.Gred?.Abjad @Model.pegawai?.Gred?.Nombor</span>
+            <br />Rank: <span class="fw-bold">@Model.pegawai?.Gred?.GelaranPangkat</span><br />Station: <span class="fw-bold">@Model.pegawai?.Stesen?.NamaStesen</span>
+            <br />Branch: <span class="fw-bold">@Model.pegawai?.Bahagian?.NamaBahagian</span><br />Section: <span class="fw-bold">@Model.pegawai?.Cawangan?.NamaCawangan</span>
             <br />Unit: <span class="fw-bold">@Model.pegawai?.Unit?.NamaUnit</span>
         </p>
 
         <div class="card-title d-flex align-items-start justify-content-between">
-            <p class="text-light fw-semibold">Senarai Kursus</p>
-            <a class="btn btn-primary" href='@Model.url'>Tambah</a>
+            <p class="text-light fw-semibold">Course List</p>
+            <a class="btn btn-primary" href='@Model.url'>Add</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Tajuk Kursus</th>
-                        <th>Tarikh Mula</th>
-                        <th>Tarikh Akhri</th>
-                        <th>Jumlah Hari</th>
-                        <th>Lokasi</th>
+                        <th>Title</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Total Day</th>
+                        <th>Location</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

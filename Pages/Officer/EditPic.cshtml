@@ -1,7 +1,7 @@
 ﻿@page
 @model spl.Pages.Officer.EditPicModel
 @{
-    ViewData["Title"] = "Kemaskini Urusetia";
+    ViewData["Title"] = "Edit PIC";
     ViewData["CurrentMenu"] = "pic";
     Layout = Model.Layout;
 }
@@ -17,7 +17,7 @@
                 <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
                         <i class="bx bx-error me-2"></i>
-                        <div class="me-auto fw-semibold">Kemaskini Tidak Berjaya</div>
+                        <div class="me-auto fw-semibold">Edit Error</div>
                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                     <div class="toast-body" id="error-msg"></div>
@@ -31,36 +31,36 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="bahagian">Bahagian</label>
+                        <label class="form-label" for="bahagian">Branch</label>
                         <select id="bahagian" name="user.IdBahagian" class="select2 form-select" asp-for="user.IdBahagian" asp-items="Model.selectBahagian" required>
-                            <option value="" hidden>Pilih Bahagian</option>
+                            <option value="" hidden>Please select</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="cawangan">Cawangan <span class="text-muted fw-light">(Optional)</span></label>
+                        <label class="form-label" for="cawangan">Section <span class="text-muted fw-light">(Optional)</span></label>
                         <select id="cawangan" name="user.IdCawangan" class="select2 form-select" asp-for="user.IdCawangan" asp-items="Model.selectCawangan">
-                            <option value="" hidden>Pilih Cawangan</option>
+                            <option value="" hidden>Please select</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" for="unit">Unit <span class="text-muted fw-light">(Optional)</span></label>
                         <select id="unit" name="user.IdUnit" class="select2 form-select" asp-for="user.IdUnit" asp-items="Model.selectUnit">
-                            <option value="" hidden>Pilih Unit</option>
+                            <option value="" hidden>Please select</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="stesen">Stesen</label>
+                        <label class="form-label" for="stesen">Station</label>
                         <select id="stesen" name="user.IdStesen" class="select2 form-select"  asp-for="user.IdStesen" asp-items="Model.selectStesen" required>
-                            <option value="" hidden>Pilih Stesen</option>
+                            <option value="" hidden>Please select</option>
                         </select>
                     </div>
 
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2">Hantar</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Batal</button>
+                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -84,7 +84,7 @@
                 success: function (response) {
                     var cawanganDropdown = $('#cawangan');
                     cawanganDropdown.emptyajax
-                    cawanganDropdown.append($('<option hidden></option>').attr('value', '').text('Pilih Cawangan'));
+                    cawanganDropdown.append($('<option hidden></option>').attr('value', '').text('Please select'));
 
                     $.each(response.cawangan, function (index, item) {
                         cawanganDropdown.append($('<option></option>').attr('value', item.id).text(item.namaCawangan));
@@ -92,14 +92,14 @@
 
                     var unitDropdown = $('#unit');
                     unitDropdown.empty();
-                    unitDropdown.append($('<option hidden></option>').attr('value', '').text('Pilih Unit'));
+                    unitDropdown.append($('<option hidden></option>').attr('value', '').text('Please select'));
 
                     $.each(response.unit, function (index, item) {
                         unitDropdown.append($('<option></option>').attr('value', item.id).text(item.namaUnit));
                     });
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    console.log('Error getting cawangan data: ' + errorThrown);
+                    console.log('Error getting section data: ' + errorThrown);
                 }
             });
         });

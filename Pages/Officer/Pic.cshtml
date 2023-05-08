@@ -1,7 +1,7 @@
 ﻿@page
 @model spl.Pages.Officer.PicModel
 @{
-    ViewData["Title"] = "Daftar Urusetia";
+    ViewData["Title"] = "PIC";
     ViewData["CurrentMenu"] = "pic";
     Layout = Model.Layout;
 }
@@ -9,8 +9,8 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card py-4 px-4">
         <div class="card-title d-flex align-items-start justify-content-between">
-            <h5 class="card-title text-primary">Senarai Urusetia</h5>
-            <a class="btn btn-primary" href='/officer/addpic'>Tambah</a>
+            <h5 class="card-title text-primary">Manage PIC</h5>
+            <a class="btn btn-primary" href='/officer/addpic'>Add</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
@@ -18,10 +18,10 @@
                     <tr>
                         <th>No</th>
                         <th>Username</th>
-                        <th>Bahagian</th>
-                        <th>Cawangan</th>
+                        <th>Branch</th>
+                        <th>Section</th>
                         <th>Unit</th>
-                        <th>Stesen</th>
+                        <th>Station</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

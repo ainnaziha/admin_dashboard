@@ -1,7 +1,7 @@
 ﻿@page
 @model spl.Pages.Division.BranchModel
 @{
-    ViewData["Title"] = "Daftar Bahagian";
+    ViewData["Title"] = "Branch";
     ViewData["CurrentMenu"] = "branch";
     Layout = Model.Layout;
 }
@@ -19,7 +19,7 @@
                             data-bs-target="#navs-justified-branch"
                             aria-controls="navs-justified-branch"
                             aria-selected="true">
-                        Bahagian
+                        Branch
                     </button>
                 </li>
                 <li class="nav-item">
@@ -31,7 +31,7 @@
                             data-bs-target="#navs-justified-section"
                             aria-controls="navs-justified-section"
                             aria-selected="false">
-                        Cawangan
+                        Section
                     </button>
                 </li>
                 <li class="nav-item">
@@ -50,15 +50,15 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-justified-branch" role="tabpanel">
                     <div class="card-title d-flex align-items-start justify-content-between">
-                        <h5 class="card-title text-primary">Senarai Bahagian</h5>
-                        <a class='btn btn-primary' href='/division/addbranch'>Tambah</a>
+                        <h5 class="card-title text-primary">Manage Branch</h5>
+                        <a class='btn btn-primary' href='/division/addbranch'>Add</a>
                     </div>
                     <div class="table-responsive text-nowrap">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Bahagian</th>
+                                    <th>Branch</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -89,16 +89,16 @@
                 <!-- Section -->
                 <div class="tab-pane fade" id="navs-justified-section" role="tabpanel">
                     <div class="card-title d-flex align-items-start justify-content-between">
-                        <h5 class="card-title text-primary">Senarai Cawangan</h5>
-                        <a class='btn btn-primary' href='/division/addsection'>Tambah</a>
+                        <h5 class="card-title text-primary">Manage Section</h5>
+                        <a class='btn btn-primary' href='/division/addsection'>Add</a>
                     </div>
                     <div class="table-responsive text-nowrap">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Bahagian</th>
-                                    <th>Nama Cawangan</th>
+                                    <th>Branch</th>
+                                    <th>Section</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -112,16 +112,16 @@
                 <!-- Unit -->
                 <div class="tab-pane fade" id="navs-justified-unit" role="tabpanel">
                     <div class="card-title d-flex align-items-start justify-content-between">
-                        <h5 class="card-title text-primary">Senarai Unit</h5>
-                        <a class="btn btn-primary" href='/division/addunit'>Tambah</a>
+                        <h5 class="card-title text-primary">Manage Unit</h5>
+                        <a class="btn btn-primary" href='/division/addunit'>Add</a>
                     </div>
                     <div class="table-responsive text-nowrap">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Bahagian</th>
-                                    <th>Nama Unit</th>
+                                    <th>Branch</th>
+                                    <th>Unit</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>

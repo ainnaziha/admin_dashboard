@@ -1,7 +1,7 @@
 ﻿@page
 @model spl.Pages.Officer.AddPicMode
 @{
-    ViewData["Title"] = "Tambah Urusetia";
+    ViewData["Title"] = "Create PIC";
     ViewData["CurrentMenu"] = "pic";
     Layout = Model.Layout;
 }
@@ -11,13 +11,13 @@
     <div class="col-xl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center">
-                <h5 class="mb-0">Tambah Urusetia</h5>
+                <h5 class="mb-0">Create PIC</h5>
             </div>
             <div class="card-body">
                 <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
                         <i class="bx bx-error me-2"></i>
-                        <div class="me-auto fw-semibold">Daftar Tidak Berjaya</div>
+                        <div class="me-auto fw-semibold">Create Error</div>
                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                     <div class="toast-body" id="error-msg"></div>
@@ -26,7 +26,7 @@
                 <form id="form-add-pic">
                     <div class="mb-3">
                         <label class="form-label" for="nama">Username</label>
-                        <input type="text" class="form-control" id="nama" name="user.Username" placeholder="Sila isikan username" required />
+                        <input type="text" class="form-control" id="nama" name="user.Username" placeholder="Enter username" required />
                     </div>
 
                     <div class="mb-3">
@@ -41,9 +41,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="bahagian">Bahagian</label>
+                        <label class="form-label" for="bahagian">Branch</label>
                         <select id="bahagian" name="user.IdBahagian" class="select2 form-select" required>
-                            <option value="" hidden>Pilih Bahagian</option>
+                            <option value="" hidden>Please select</option>
                             @foreach (var item in Model.listBahagian)
                             {
                                 <option value=@item.Id>@item.NamaBahagian</option>
@@ -52,23 +52,23 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="cawangan">Cawangan <span class="text-muted fw-light">(Optional)</span></label>
+                        <label class="form-label" for="cawangan">Section <span class="text-muted fw-light">(Optional)</span></label>
                         <select id="cawangan" name="user.IdCawangan" class="select2 form-select">
-                            <option hidden>Pilih Cawangan</option>
+                            <option hidden>Please select</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" for="unit">Unit <span class="text-muted fw-light">(Optional)</span></label>
                         <select id="unit" name="user.IdUnit" class="select2 form-select">
-                            <option hidden>Pilih Unit</option>
+                            <option hidden>Please select</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="stesen">Stesen</label>
+                        <label class="form-label" for="stesen">Station</label>
                         <select id="stesen" name="user.IdStesen" class="select2 form-select" required>
-                            <option value="" hidden>Pilih Stesen</option>
+                            <option value="" hidden>Please select</option>
 
                             @foreach (var item in Model.listStesen)
                             {
@@ -78,8 +78,8 @@
                     </div>
 
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2">Hantar</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Batal</button>
+                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -103,7 +103,7 @@
                 success: function (response) {
                     var cawanganDropdown = $('#cawangan');
                     cawanganDropdown.emptyajax
-                    cawanganDropdown.append($('<option hidden></option>').attr('value', '').text('Pilih Cawangan'));
+                    cawanganDropdown.append($('<option hidden></option>').attr('value', '').text('Please select'));
 
                     $.each(response.cawangan, function (index, item) {
                         cawanganDropdown.append($('<option></option>').attr('value', item.id).text(item.namaCawangan));
@@ -111,14 +111,14 @@
 
                     var unitDropdown = $('#unit');
                     unitDropdown.empty();
-                    unitDropdown.append($('<option hidden></option>').attr('value', '').text('Pilih Unit'));
+                    unitDropdown.append($('<option hidden></option>').attr('value', '').text('Please select'));
 
                     $.each(response.unit, function (index, item) {
                         unitDropdown.append($('<option></option>').attr('value', item.id).text(item.namaUnit));
                     });
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    console.log('Error getting cawangan data: ' + errorThrown);
+                    console.log('Error getting section data: ' + errorThrown);
                 }
             });
         });

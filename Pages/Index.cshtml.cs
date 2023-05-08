@@ -63,7 +63,7 @@ namespace spl.Pages
                 else
                 {
                     connection.Close();
-                    errorMsg = "Sila pastikan username dan password adalah betul.";
+                    errorMsg = "Wrong username and password";
                     return Page();
                 }
             }

@@ -1,7 +1,7 @@
 ﻿@page
 @model spl.Pages.Division.EditGradeModel
 @{
-    ViewData["Title"] = "Kemaskini Gred";
+    ViewData["Title"] = "Edit Grade";
     ViewData["CurrentMenu"] = "grade";
     Layout = Model.Layout;
 }
@@ -11,7 +11,7 @@
     <div class="col-xl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center">
-                <h5 class="mb-0">Kemaskini Gred</h5>
+                <h5 class="mb-0">Edit Grade</h5>
             </div>
             <div class="card-body">
                 <div id="error-toast" class="bs-toast toast fade bg-danger hide my-4" role="alert" aria-live="assertive" aria-atomic="true">
@@ -27,34 +27,34 @@
                     <input type="hidden" name="gred.Id" value="@Model.gred.Id" />
 
                      <div class="mb-3">
-                        <label class="form-label" for="abjad">Abjad Gred</label>
+                        <label class="form-label" for="abjad">Grade Prefix</label>
                         <input type="text" class="form-control" id="abjad" name="gred.Abjad" value="@Model.gred.Abjad" required/>
                     </div>
 
                      <div class="mb-3">
-                        <label class="form-label" for="nombor">Nombor Gred</label>
+                        <label class="form-label" for="nombor">Grade Suffix</label>
                         <input type="text" class="form-control" id="nombor" name="gred.Nombor" value="@Model.gred.Nombor" required />
                     </div>
 
                      <div class="mb-3">
-                        <label class="form-label" for="pangkat">Pangkat <span class="text-muted fw-light">(Optional)</span></label>
+                        <label class="form-label" for="pangkat">Rank <span class="text-muted fw-light">(Optional)</span></label>
                         <input type="text" class="form-control" id="pangkat" name="gred.Pangkat" value="@Model.gred.Pangkat" />
                     </div>
 
                      <div class="mb-3">
-                        <label class="form-label" for="gelaran">Gelaran Pangkat <span class="text-muted fw-light">(Optional)</span></label>
+                        <label class="form-label" for="gelaran">Rank Title <span class="text-muted fw-light">(Optional)</span></label>
                         <input type="text" class="form-control" id="gelaran" name="gred.GelaranPangkat" value="@Model.gred.GelaranPangkat" />
                     </div>
 
                      <div class="mb-3">
-                        <label class="form-label" for="jabatan">Jabatan</label>
+                        <label class="form-label" for="jabatan">Department</label>
                         <input type="text" class="form-control" id="jabatan" name="gred.Jabatan" value="@Model.gred.Jabatan" required />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="kumpulan">Kumpulan <span class="text-muted fw-light">(Optional)</span></label>
+                        <label class="form-label" for="kumpulan">Group <span class="text-muted fw-light">(Optional)</span></label>
                         <select id="kumpulan" name="gred.IdKumpulan" class="select2 form-select" asp-for="gred.IdKumpulan">
-                            <option hidden>Pilih Kumpulan</option>
+                            <option hidden>Please select</option>
                             <option value=1>JUSA</option>
                             <option value=2>PENGURUSAN DAN PROFESIONAL</option>
                             <option value=3>PELAKSANA</option>
@@ -62,8 +62,8 @@
                     </div>
 
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2">Hantar</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Batal</button>
+                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Cancel</button>
                     </div>
                 </form>
             </div>

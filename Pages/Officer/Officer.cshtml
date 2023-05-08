@@ -1,7 +1,7 @@
 ﻿@page
 @model spl.Pages.Officer.OfficerModel
 @{
-    ViewData["Title"] = "Daftar Pegawai";
+    ViewData["Title"] = "Officer";
     ViewData["CurrentMenu"] = "officer";
     Layout = Model.Layout;
 }
@@ -9,21 +9,21 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card py-4 px-4">
         <div class="card-title d-flex align-items-start justify-content-between">
-            <h5 class="card-title text-primary">Senarai Pegawai</h5>
-            <a class="btn btn-primary" href='/officer/addofficer'>Tambah</a>
+            <h5 class="card-title text-primary">Manage Officer</h5>
+            <a class="btn btn-primary" href='/officer/addofficer'>Add</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama</th>
-                        <th>Nombor IC</th>
-                        <th>Gred</th>
-                        <th>Bahagian</th>
-                        <th>Cawangan</th>
+                        <th>Name</th>
+                        <th>IC Number</th>
+                        <th>Grade</th>
+                        <th>Branch</th>
+                        <th>Section</th>
                         <th>Unit</th>
-                        <th>Stesen</th>
+                        <th>Station</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -47,7 +47,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="/officer/editofficer?id=@Model.listPegawai[index].Id"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                                         <a class="dropdown-item" href="javascript:void(0);" onclick="deleteItem(@Model.listPegawai[index].Id)"><i class="bx bx-trash me-1"></i> Delete</a>
-                                        <a class="dropdown-item" href="/officer/officercourse?id=@Model.listPegawai[index].Id"><i class="bx bx-briefcase me-1"></i> Senarai Kursus</a>
+                                        <a class="dropdown-item" href="/officer/officercourse?id=@Model.listPegawai[index].Id"><i class="bx bx-briefcase me-1"></i> Course</a>
                                     </div>
                                 </div>
                             </td>
