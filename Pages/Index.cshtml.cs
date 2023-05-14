@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using spl.Model;
 using System.Diagnostics;
-using System.Data.SqlClient;
 using spl.Middleware;
+using Npgsql;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace spl.Pages
 {
@@ -33,13 +34,12 @@ namespace spl.Pages
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
                 connection.Open();
 
-                String sql = $"SELECT TOP 1 * FROM users WHERE username = '{user.Username}' AND password = '{password}' AND (is_deleted IS NULL OR is_deleted <> 1);";
-
-                using SqlCommand command = new(sql, connection);
-                using SqlDataReader reader = command.ExecuteReader();
+                String sql = $"SELECT * FROM users WHERE username = '{user.Username}' AND password = '{password}' AND (is_deleted IS NULL OR is_deleted <> 1) LIMIT 1;";
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                using NpgsqlDataReader reader = command.ExecuteReader();
 
                 if (reader.HasRows)
                 {
