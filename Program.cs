@@ -28,6 +28,18 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+
+app.Use(async (ctx, next) =>
+{
+    await next();
+
+    if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+    {
+        ctx.Request.Path = "/NotFound";
+        await next();
+    }
+});
+
 app.UseStaticFiles();
 
 app.UseRouting();

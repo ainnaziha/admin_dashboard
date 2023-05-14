@@ -26,7 +26,8 @@ namespace spl.Pages.Officer
         {
             _configuration = config;
         }
-        public void OnGet()
+
+        public IActionResult OnGet()
         {
             string userType = Request.Cookies["UserType"] ?? "";
 
@@ -36,11 +37,13 @@ namespace spl.Pages.Officer
             }
             else
             {
-                Layout = "../Shared/_UrusetiaLayout.cshtml";
+                return RedirectToPage("/notfound");
             }
+
             FetchUser();
             FetchBranch();
             FetchStation();
+            return Page();
         }
 
         public void FetchUser()
