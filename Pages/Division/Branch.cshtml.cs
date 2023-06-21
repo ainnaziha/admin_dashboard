@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
-using System.Data.SqlClient;
 using spl.Model;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql;
 
 namespace spl.Pages.Division
 {
@@ -41,13 +41,13 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);                
                 connection.Open();
                 String sql = "SELECT * FROM bahagian " +
                         "WHERE is_deleted IS NULL OR is_deleted <> 1;";
 
-                using SqlCommand command = new(sql, connection);
-                using (SqlDataReader reader = command.ExecuteReader())
+                using NpgsqlCommand  command = new NpgsqlCommand(sql, connection);
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -79,15 +79,15 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
                 connection.Open();
                 String sql = "SELECT c.id, c.nama_cawangan, b.id as id_bahagian, b.nama_bahagian " +
                     "FROM cawangan c " +
                     "JOIN bahagian b ON c.id_bahagian = b.id " +
                     "WHERE c.is_deleted IS NULL OR c.is_deleted <> 1;";
 
-                using SqlCommand command = new(sql, connection);
-                using (SqlDataReader reader = command.ExecuteReader())
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -127,15 +127,15 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);                
                 connection.Open();
                 String sql = "SELECT c.id, c.nama_unit, b.id as id_bahagian, b.nama_bahagian " +
                     "FROM unit c " +
                     "JOIN bahagian b ON c.id_bahagian = b.id " +
                     "WHERE c.is_deleted IS NULL OR c.is_deleted <> 1;";
 
-                using SqlCommand command = new(sql, connection);
-                using (SqlDataReader reader = command.ExecuteReader())
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -173,12 +173,12 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);                
                 connection.Open();
 
                 String sql = $"UPDATE bahagian SET is_deleted = 1 WHERE id = {id};";
 
-                using SqlCommand command = new(sql, connection);
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();
@@ -196,12 +196,12 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);                
                 connection.Open();
 
                 String sql = $"UPDATE cawangan SET is_deleted = 1 WHERE id = {id};";
 
-                using SqlCommand command = new(sql, connection);
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();
@@ -220,12 +220,12 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);                
                 connection.Open();
 
                 String sql = $"UPDATE unit SET is_deleted = 1 WHERE id = {id};";
 
-                using SqlCommand command = new(sql, connection);
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();

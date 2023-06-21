@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Data.SqlClient;
 using spl.Model;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Npgsql;
 
 namespace spl.Pages.Division
 {
@@ -45,12 +45,12 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
                 connection.Open();
                 String sql = $"SELECT * FROM cawangan WHERE id='{id}'";
-                using SqlCommand command = new(sql, connection);
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -80,13 +80,13 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
                 connection.Open();
                 String sql = "SELECT * FROM bahagian " +
                         "WHERE is_deleted IS NULL OR is_deleted <> 1;";
 
-                using SqlCommand command = new(sql, connection);
-                using (SqlDataReader reader = command.ExecuteReader())
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -117,12 +117,12 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
                 connection.Open();
 
                 String sql = $"UPDATE cawangan SET nama_cawangan='{cawangan.NamaCawangan}', id_bahagian='{cawangan.IdBahagian}' WHERE id= {cawangan.Id};";
 
-                using SqlCommand command = new(sql, connection);
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();

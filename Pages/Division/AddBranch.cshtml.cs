@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Data.SqlClient;
 using spl.Model;
 using System.Diagnostics;
+using Npgsql;
 
 namespace spl.Pages.Division
 {
@@ -38,11 +38,11 @@ namespace spl.Pages.Division
             try
             {
                 String connectionString = _configuration.GetConnectionString("DefaultConnection");
-                using SqlConnection connection = new(connectionString);
+                using NpgsqlConnection connection = new NpgsqlConnection(connectionString);                
                 connection.Open();
                 String sql = $"INSERT INTO bahagian (nama_bahagian) VALUES ('{bahagian.NamaBahagian}');";
 
-                using SqlCommand command = new(sql, connection);
+                using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();
